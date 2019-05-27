@@ -1,0 +1,122 @@
+@import './_b.less';
+//登录页面样式
+.login {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #545C64;
+    .container {
+        width: 400px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 3px 3px 8px #000;
+        background: #545C64;
+        .el-input__inner {
+            border: 1px solid #4d4d4d;
+            background: #303233;
+            color: #fff;
+        }
+        //验证码
+        .code {
+            width: 80px;
+            height: 38px;
+            margin-left: 20px;
+            background: #409EFF;
+            border-radius: 5px;
+            line-height: 38px;
+            text-align: center;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 3px;
+        }
+        .el-button {
+            margin: 0 auto;
+        }
+    }
+}
+//layout样式
+.layout {
+    .el-header {
+        background: @themeColor;
+        color: #fff;
+        .sys-name {
+            width: 180px;
+            font-size: 24px;
+            text-align: center;
+            font-weight: bold;
+			cursor: pointer;
+			img {
+				width: 120px;
+			}
+        }
+        .el-dropdown {
+            color: #fff;
+        }
+    }
+    .el-aside {
+        position: fixed;
+        top: 60px;
+        height: 100%;
+		padding-bottom: 100px;
+        background: @themeColor;
+		.el-menu {
+			border-right: none;
+		}
+        //处理侧边导航ICON颜色
+        .el-submenu__title i {
+            color: #fff;
+        }
+        .el-menu-item, .el-submenu__title {
+            height: 50px;
+            line-height: 50px;
+        }
+		//滚动条样式
+		&::-webkit-scrollbar {/*滚动条整体样式*/
+		    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+		    height: 4px;
+		}
+		&::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+		    border-radius: 18px;
+		    -webkit-box-shadow: inset 0 0 5px rgba(255,255,255,0.8);
+		    background: @themeColor;
+		}
+		&::-webkit-scrollbar-track {/*滚动条里面轨道*/
+		    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+		    border-radius: 0;
+		    background: rgba(0,0,0,0.1);
+		}
+    }
+    .el-main {
+        position: fixed;
+        top: 60px;
+        left: 200px;
+        height: 100%;
+		padding-bottom: 90px;
+        width : ~"calc(100% - 200px)";
+        //滚动条样式
+        &::-webkit-scrollbar {/*滚动条整体样式*/
+            width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+            height: 4px;
+        }
+        &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 18px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            background: @themeColor;
+        }
+        &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            border-radius: 0;
+            background: rgba(0,0,0,0.1);
+        }
+    }
+}
+//发布商品
+.product-submit {
+	.product-info {
+		margin-top: 20px;
+	}
+}
