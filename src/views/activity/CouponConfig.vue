@@ -1,6 +1,6 @@
 <template>
 	<div class="">
-		详情
+		优惠券配置
 	</div>
 </template>
 

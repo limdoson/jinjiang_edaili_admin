@@ -27,17 +27,20 @@
 			header-row-class-name='bg-table-header'
 			:header-cell-style = "{backgroundColor: '#fafafa'}"
 			ref="multipleTable">
-			<el-table-column prop='id' label='厂商ID'></el-table-column>
+			<!-- <el-table-column prop='id' label='厂商ID'></el-table-column> -->
 			<el-table-column prop='factory_name' label='厂商名称'></el-table-column>
 			<el-table-column prop='user_name' label='厂商联系人姓名'></el-table-column>
-			<el-table-column prop='phone' label='厂商联系人手机'></el-table-column>
+			<el-table-column prop='phone' label='手机号码'></el-table-column>
 			<el-table-column prop='free_supply' label='无偿供货金额(元)'></el-table-column>
 			<el-table-column prop='unsettled_amount' label='未结算货款(元)'></el-table-column>
-			<el-table-column prop='time' label='添加时间'></el-table-column>
-			<el-table-column fixed='right' label='操作' width='200'>
+			<el-table-column prop='unsettled_amount' label='未结算运费(元)'></el-table-column>
+			<!-- <el-table-column prop='time' label='添加时间'></el-table-column> -->
+			<el-table-column fixed='right' label='操作' width='260'>
 				<template slot-scope="scope">
-					<el-button type="text" size="small">详情</el-button>
+					<el-button type="text" size="small" @click="$router.push('factory-detail')">详情</el-button>
 					<el-button type="text" size="small" @click='showDialog(scope.row)'>结算货款</el-button>
+					<el-button type="text" size="small" @click='showDialogExpress(scope.row)'>结算运费</el-button>
+					<el-button type="text" size="small" @click="$router.push('factory-order')">查看订单</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -50,9 +53,9 @@
 			  :total="1000">
 			</el-pagination>
 		</div>
-		<!-- 结算dialog -->
+		<!-- 结算货款dialog -->
 		<el-dialog 
-			title='结算' 
+			title='货款结算' 
 			:visible.sync='show_dialog' 
 			:append-to-body='true'
 			:close-on-click-modal='false'
@@ -67,6 +70,20 @@
 			<span slot="footer" class="dialog-footer">
 			    <el-button @click="cancle" size='small'>取 消</el-button>
 			    <el-button type="primary" @click="curfirm" size='small'>确 定</el-button>
+		  	</span>
+		</el-dialog>
+		<!-- 结算运费dialog -->
+		<el-dialog 
+			title='运费结算' 
+			:visible.sync='show_dialog_express' 
+			:append-to-body='true'
+			:close-on-click-modal='false'
+			:close-on-press-escape='false'
+			:show-close='false'>
+			<el-input v-model='settled_amount_express' type='number' placeholder="请输入结算金额"></el-input>
+			<span slot="footer" class="dialog-footer">
+			    <el-button @click="cancleExpress" size='small'>取 消</el-button>
+			    <el-button type="primary" @click="curfirmExpress" size='small'>确 定</el-button>
 		  	</span>
 		</el-dialog>
 	</div>
@@ -100,7 +117,9 @@
 					
 				],
 				show_dialog : false,
+				show_dialog_express : false,
 				settled_amount : null,//dialog中的结算金额
+				settled_amount_express : null,//dialog中的结算运费金额
 			}
 		},
 		created () {
@@ -110,6 +129,9 @@
 		methods : {
 			showDialog (item) {
 				this.show_dialog = true;
+			},
+			showDialogExpress (item) {
+				this.show_dialog_express = true;
 			},
 			cancle () {
 				this.show_dialog = false;
@@ -124,6 +146,23 @@
 					this.utils.msg('结算金额必须大于0');
 					return;
 				}
+			},
+			cancleExpress () {
+				this.show_dialog_express = false;
+				this.settled_amount_express = null;
+			},
+			curfirmExpress () {
+				if (!this.settled_amount_express) {
+					this.utils.msg('请输入结算金额');
+					return;
+				}
+				if (this.settled_amount_express <= 0) {
+					this.utils.msg('结算金额必须大于0');
+					return;
+				}
+			},
+			search () {
+				
 			}
 		},
 		//mounted () {},

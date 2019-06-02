@@ -27,11 +27,12 @@
 			<el-table-column prop='phone' label='手机号码'></el-table-column>
 			<el-table-column prop='agent_level' label='代理等级'></el-table-column>
 			<el-table-column prop='discount' label='拿货价折扣'></el-table-column>
-			
+			<el-table-column prop='payment_of_goods' label='累计进货额'></el-table-column>
 			<el-table-column prop='recommender' label="推荐人"></el-table-column>
 			<el-table-column fixed='right' label='操作' width='200'>
 				<template slot-scope="scope">
 					<el-button type="text" size="small" @click="$router.push('agent-detail')">详情</el-button>
+					<el-button type="text" size="small" @click="$router.push('agent-purchase-record')">进货记录</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -76,6 +77,7 @@
 						discount : 7,
 						payment :  1000,
 						status : 1,//0未缴费，1已缴费
+						payment_of_goods : 1000,
 						time : '2018-05-05',
 						recommender : '林杜森'
 					},{
@@ -85,6 +87,7 @@
 						agent_level : '1级代理',
 						discount : 7,
 						payment :  1000,
+						payment_of_goods : 1000,
 						status : 0,//0未缴费，1已缴费
 						time : '2018-05-05',
 						recommender : '-'

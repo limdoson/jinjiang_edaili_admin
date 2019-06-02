@@ -42,9 +42,37 @@ let menu = [
                 id : '2-2',
                 name : '公众号菜单设置',
                 path : '/index/wx-menu'
-            }
+            },{
+				id : '2-3',
+				name : '分享设置',
+				path : '/index/wx-share-config'
+			}
         ]
     },{
+		title : '运费策略',
+		index : '11',
+		sub_menu : [
+			{
+				id : '11-1',
+				name : '运费设置',
+				path : '/index/express-setting'
+			}
+		]
+	},{
+		title : '首页内容管理',
+		index : '12',
+		sub_menu : [
+			{
+				id : '12-1',
+				name : '广告橱窗',
+				path : '/index/display-window'
+			},{
+				id : '12-2',
+				name : '广告橱窗效果示例',
+				path : '/index/window-demo'
+			}
+		]
+	},{
 		title : '商品管理',
 		index : '7',
 		sub_menu : [
@@ -92,22 +120,26 @@ let menu = [
                 name : '用户数据',
                 path : '/index/member'
             },{
+				id : '3-3',
+				name : '待审核分销商',
+				path : '/index/member-unaudited'
+			},{
 				id : '3-2',
 				name : '数据导出',
 				path : '/index/member-export'
 			}
         ]
     },{
-		title :'厂商管理',
+		title :'供应商管理',
 		index : '10',
 		sub_menu : [
 			{
 				id : '10-1',
-				name : '厂商列表',
+				name : '供应商列表',
 				path : '/index/factory-list'
 			},{
 				id : '10-2',
-				name : '添加厂商',
+				name : '添加供应商',
 				path : '/index/factory-add'
 			},
 		]
@@ -148,6 +180,10 @@ let menu = [
                 name : '交易流水数据',
                 path : '/index/trade-data'
             },{
+				id : '5-6',
+				name : '供应商货款记录',
+				path : '/index/supplier-data'
+			},{
 				id : '5-3',
 				name : '代理缴费记录',
 				path : '/index/agent-payment-data'
@@ -170,13 +206,13 @@ let menu = [
 		index : '6',
 		sub_menu : [
 			{
-				id : '6-1',
-				name : '砸金蛋活动设置',
-				path : '/index/egg-config'
+				id: '6-3',
+				name : '优惠券列表',
+				path : '/index/coupon-list'
 			},{
-				id : '6-2',
-				name : '砸金蛋中奖纪录',
-				path : '/index/egg-winning-record'
+				id: '6-4',
+				name : '优惠券发放',
+				path : '/index/coupon-issuance'
 			}
 		]
 	}

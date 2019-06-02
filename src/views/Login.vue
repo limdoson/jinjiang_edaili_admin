@@ -1,6 +1,6 @@
 <template>
-	<div class="login c-c">
-		<div class="container ">
+	<div class="login c-c" @keyup.enter="loginHandle">
+		<div class="container">
 			<div class="input-item f-s">
 				<el-input type='text' v-model='user_name' placeholder='请输入登录用户名'></el-input>
 			</div>
@@ -37,20 +37,20 @@
 		//mounted () {},
 		methods : {
 			loginHandle () {
-				if (!this.user_name) {
-					this.utils.msg('登录用户名不能为空');
-					return;
-				}
-				if (!this.user_name) {
-					this.utils.msg('登录密码不能为空');
-					return;
-				}
-				let code_result = Code.checkCode(this.code);
-				if (!code_result) {
-					this.utils.msg('验证码错误');
-					return;
-				}
-				
+				// if (!this.user_name) {
+				// 	this.utils.msg('登录用户名不能为空');
+				// 	return;
+				// }
+				// if (!this.user_name) {
+				// 	this.utils.msg('登录密码不能为空');
+				// 	return;
+				// }
+				// let code_result = Code.checkCode(this.code);
+				// if (!code_result) {
+				// 	this.utils.msg('验证码错误');
+				// 	return;
+				// }
+				this.$router.push('/index')
 			},
 			resetCode () {
 				Code.createCode();

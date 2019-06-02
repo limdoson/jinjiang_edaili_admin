@@ -19,6 +19,9 @@
 		</el-row>
 		<!--  -->
 		<el-row :gutter="10" class='search-header' style='padding-top: 10px;'>
+			<el-col :span='3' class='text'>
+				<span class="green">团队总人数：102</span>
+			</el-col>
 			<el-col :span='2'>
 				<el-button type='primary' size="small" >全部用户</el-button>
 			</el-col>
@@ -38,21 +41,15 @@
 			<el-table-column prop='id' label='ID'></el-table-column>
 			<el-table-column prop='nick_name' label='昵称'></el-table-column>
 			<el-table-column prop='real_name' label='真实姓名'></el-table-column>
-			<el-table-column prop='user_identity' label="推荐人(ID)">
-				<template slot-scope='scope'>
-					{{scope.row.recommender}}（{{scope.row.recommender_id}}）
-				</template>
-			</el-table-column>
-			<el-table-column prop='user_identity' label="用户身份"></el-table-column>
-			<el-table-column prop='team_count' label='团队人数'></el-table-column>
+			<!-- <el-table-column prop='team_count' label='团队人数'></el-table-column> -->
 			<el-table-column prop='balance' label='账户余额'></el-table-column>
-			<el-table-column prop=''></el-table-column>
 			<el-table-column prop='csp_amount' label='消费金额'></el-table-column>
+			<el-table-column prop='user_identity' label="用户身份"></el-table-column>
 			<el-table-column prop='time' label='加入时间'></el-table-column>
 			<el-table-column fixed='right' label='操作' width='280'>
 				<template slot-scope="scope">
 					<el-button type='text' size='small' @click="$router.push('member-detail')">详情</el-button>
-					<el-button type='text' size='small' @click="$router.push('member-team/1')" v-if='scope.row.user_identity_status > 0'>团队成员</el-button>
+					<el-button type='text' size='small' @click="$router.push('/index/member-team/2')" v-if='scope.row.user_identity_status > 0'>团队成员</el-button>
 					<el-button type="text" size="small" @click='recharge'>账户充值</el-button>
 					<el-button type="text" size="small">转为普通用户</el-button>
 					<el-button type="text" size="small">转为分销商</el-button>
@@ -115,8 +112,6 @@
 						balance : 20,
 						csp_amount : 1999,
 						user_identity_status : 1,
-						recommender : '林文峰',
-						recommender_id : 2,
 						user_identity : '分销商',
 						time : '1920-08-01'
 					},{
@@ -125,8 +120,6 @@
 						real_name : '林文峰',
 						team_count : '-',
 						balance : 20,
-						recommender : '-',
-						recommender_id : '-',
 						csp_amount : 1999,
 						user_identity_status : 0,
 						user_identity : '普通会员',
@@ -143,6 +136,8 @@
 		},
 		created () {
 			
+			console.log('c--',this.$route.params.id)
+			//console.log('load')
 		},
 		
 		methods : {
@@ -179,6 +174,11 @@
 				}
 			}
 		},
+		watch : {
+			'$route.params.id'(n,o) {
+				console.log(this.$route.params.id)
+			}
+		}
 		//mounted () {},
 		// watch () {
 		// 	a (n,o) {

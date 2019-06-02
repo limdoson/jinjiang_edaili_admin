@@ -47,7 +47,22 @@ let router = new Router({
                 },{//公众号二级菜单
                     path : 'wx-menu-sub/:id?',
                     component : () => import('./views/wx-setting/WxMenuSub'),
-                },{//在售商品
+                },{//微信分享设置
+					path : 'wx-share-config',
+					component : () => import('./views/wx-setting/WxShareConfig'),
+				},{//运费策略
+					path : 'express-setting',
+					component : () => import('./views/express/Index'),
+				},{//广告橱窗
+					path : 'display-window',
+					component : () => import('./views/window/Index'),
+				},{//广告橱窗示例
+					path : 'window-demo',
+					component : () => import('./views/window/Demo'),
+				},{//广告橱窗添加
+					path : 'window-add',
+					component : () => import('./views/window/Add'),
+				},{//在售商品
 					path : 'product-insale',
 					component : () => import('./views/product/ProductInsale'),
 				},{//商品云仓库
@@ -59,21 +74,37 @@ let router = new Router({
 				},{//商品规格属性管理
 					path : 'product-attr-setting',
 					component : () => import('./views/product/ProductAttrSetting'),
-				},{//用户管理
+				},{//商品购买记录
+					path : 'product-buy-record',
+					component : () => import('./views/product/BuyRecord'),
+				},{//用户管理，
 					path : 'member',
 					component : () => import('./views/member/Index'),
 				},{//用户数据导出
 					path : 'member-export',
 					component : () => import('./views/member/MemberExport'),
-				},{//用户信息详情
+				},{//用户信息详情，
 					path : 'member-detail',
 					component : () => import('./views/member/Detail'),
+				},{//分销商团队成员
+					path : 'member-team/:id?',
+					component : () => import('./views/member/Team'),
+					
+				},{//待审核分销商
+					path : 'member-unaudited',
+					component : () => import('./views/member/UnauditedMember'),
 				},{//厂商列表
 					path : 'factory-list',
 					component : () => import('./views/factory/List'),
 				},{//厂商添加
 					path : 'factory-add',
 					component : () => import('./views/factory/Add'),
+				},{//供应商详情
+					path : 'factory-detail',
+					component : () => import('./views/factory/Detail'),
+				},{//供应商订单
+					path : 'factory-order',
+					component : () => import('./views/factory/Order'),
 				},{//待审核代理
 					path : '/index/agent-unaudited',
 					component : () => import('./views/agent/Unaudited'),
@@ -83,6 +114,9 @@ let router = new Router({
 				},{//代理详情
 					path : '/index/agent-detail',
 					component : () => import('./views/agent/Detail'),
+				},{//代理进货记录
+					path : '/index/agent-purchase-record',
+					component : () => import('./views/agent/Purchase'),
 				},{//订单数据
 					path : 'order',
 					component : () => import('./views/order/Index'),
@@ -95,6 +129,9 @@ let router = new Router({
 				},{//交易流水
 					path : 'trade-data',
 					component : () => import('./views/finance/TradeData'),
+				},{
+					path : 'supplier-data',
+					component : () => import('./views/finance/SupplierData'),
 				},{//代理缴费记录
 					path : 'agent-payment-data',
 					component : () => import('./views/finance/AgentPaymentData'),
@@ -110,12 +147,15 @@ let router = new Router({
 				},{//财务记录导出
 					path : 'finance-data-export',
 					component : () => import('./views/finance/FinanceDataExport'),
-				},{//砸金蛋活动配置
-					path : 'egg-config',
-					component : () => import('./views/activity/EggConfig'),
-				},{//砸金蛋中奖纪录
-					path : 'egg-winning-record',
-					component : () => import('./views/activity/EggWinningRecord'),
+				},{//优惠券列表
+					path : 'coupon-list',
+					component : () => import('./views/activity/CouponList'),
+				},{//优惠券发放
+					path : 'coupon-issuance',
+					component : () => import('./views/activity/CouponIssuance'),
+				},{//优惠券使用记录
+					path : 'coupon-record',
+					component : () => import('./views/activity/CouponRecord'),
 				}
             ]
         },{

@@ -1,6 +1,6 @@
 <template>
 	<div class="">
-		详情
+		进货记录
 	</div>
 </template>
 

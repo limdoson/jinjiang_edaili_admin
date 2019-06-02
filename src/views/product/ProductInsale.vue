@@ -15,9 +15,9 @@
 				<el-select v-model='search_type'>
 					<el-option label='商品名称' value='1'></el-option>
 					<el-option label='商品ID' value='2'></el-option>
-					<el-option label='厂家名称' value='3'></el-option>
-					<el-option label='厂家ID' value='4'></el-option>
-					<el-option label='厂家电话' value='5'></el-option>
+					<el-option label='供货商名称' value='3'></el-option>
+					<el-option label='供货商ID' value='4'></el-option>
+					<el-option label='供货商电话' value='5'></el-option>
 				</el-select>
 			</el-col>
 			<el-col :span='4'>
@@ -52,12 +52,13 @@
 			<el-table-column prop='product_title' label='商品名称'></el-table-column>
 			<el-table-column prop='supply_price' label='供应价'></el-table-column>
 			<el-table-column prop='market_price' label='售价'></el-table-column>
-			<el-table-column prop='supply_factory_name' label='供应厂家名称'></el-table-column>
+			<el-table-column prop='supply_factory_name' label='供货商名称'></el-table-column>
 			<el-table-column prop='sales_volume' label='累计销量'></el-table-column>
 			<el-table-column prop='time' label='上架时间'></el-table-column>
 			<el-table-column fixed='right' label='操作' width='200'>
 				<template slot-scope="scope">
-					<el-button type="danger" size="small">下架商品</el-button>
+					<el-button type="text" size="small">下架商品</el-button>
+					<el-button type="text" size="small" @click="$router.push('product-buy-record')">购买记录</el-button>
 				</template>
 			</el-table-column>
 		</el-table>

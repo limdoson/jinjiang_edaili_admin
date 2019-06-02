@@ -1,7 +1,5 @@
 <template>
-	<div class="">
-		详情
-	</div>
+	<div class="">demo</div>
 </template>
 
 <script>

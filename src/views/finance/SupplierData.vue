@@ -3,7 +3,7 @@
 		<!-- 顶部 -->
 		<el-row :gutter='10' class="search-header" type="flex">
 			<el-col :span='4' class='text'>
-				<span class="green">分销支出金额：18000</span>
+				<span class="green">货款额：18000</span>
 			</el-col>
 			<el-col :span='8'>
 				 <el-date-picker
@@ -17,9 +17,9 @@
 			</el-col>
 			<el-col :span='3'>
 				<el-select v-model="search_type" placeholder="请选择">
-					<el-option value='1' label='推荐人ID'></el-option>
-					<el-option value='2' label='推荐人姓名'></el-option>
-					<el-option value='3' label='推荐人电话'></el-option>
+					<el-option value='1' label='供应商ID'></el-option>
+					<el-option value='2' label='供应商名称'></el-option>
+					<el-option value='3' label='供应商电话'></el-option>
 			  	</el-select>
 			</el-col>
 			<el-col :span='4'>
@@ -36,35 +36,19 @@
 			:header-cell-style = "{backgroundColor: '#fafafa'}"
 			ref="multipleTable">
 			<el-table-column prop='id' label='ID'></el-table-column>
-			<el-table-column prop='agent_level' label='推荐人姓名（ID）'>
+			<el-table-column prop='agent_level' label='代理名称(ID)'>
 				<template slot-scope='scope'>
-						{{scope.row.recommender}}({{scope.row.recommender_id}})
-					</template>
-				</el-table-column>
+					{{scope.row.supplier_name}}({{scope.row.supplier_id}})
+				</template>
 			</el-table-column>
-			<el-table-column prop='agent_level' label='消费者姓名（ID）'>
-				<template slot-scope='scope'>
-						{{scope.row.buyer_name}}({{scope.row.buyer_id}})
-					</template>
-				</el-table-column>
-			</el-table-column>
-			<el-table-column prop='order_id' label='订单编号'>
-				
-			</el-table-column>
-			<el-table-column prop='pay_money' label='消费金额（元）'>
-				
-			</el-table-column>
-			<el-table-column prop='fx_rate' label='分销比例（百分比）'>
-				
-			</el-table-column>
-			<el-table-column prop='profit' label='获得分销金额（元）'>
-				
-			</el-table-column>
-			
-			<el-table-column prop='time' label='时间'>
-				
-			</el-table-column>
-			
+			<el-table-column prop='free_supply' label="无偿供货额"></el-table-column>
+			<el-table-column prop='order_ind' label="订单ID"></el-table-column>
+			<el-table-column prop='payment_for_goods' label="描述"></el-table-column>
+			<el-table-column prop='target' label="货款流向"></el-table-column>
+			<el-table-column prop='surplus_free_supply' label="剩余无偿供货额"></el-table-column>
+			<el-table-column prop='unsettled_payment' label="未结算货款"></el-table-column>
+			<el-table-column prop='settled_payment' label="已结算货款"></el-table-column>
+			<el-table-column prop='time' label='时间'></el-table-column>
 		</el-table>
 		<div class="pagenation s-b">
 			<div>
@@ -92,15 +76,30 @@
 				list : [
 					{
 						id :1,
-						recommender : '林杜森',
-						recommender_id : 1,
-						buyer_name : '林文峰',
-						buyer_id : 2,
-						fx_rate : 10,
-						pay_money : 100,
-						profit : 10,
-						order_id : 1,
-						time : '2019-02-02'
+						supplier_id : 2,
+						supplier_name : '供应商名称',
+						free_supply : 5000,
+						order_ind : 120,
+						payment_for_goods : '代理进货，产生1000货款',
+						target : '从无偿供货额中扣除',
+						all_payment_for_goods : '总货款：0',
+						unsettled_payment : '0',
+						surplus_free_supply : 4000,
+						settled_payment : '0',
+						time : '2018-02-08'
+					},{
+						id :1,
+						supplier_id : 2,
+						supplier_name : '供应商名称',
+						free_supply : 0,
+						order_ind : 120,
+						payment_for_goods : '消费者购买商品，产生1000货款',
+						target : '计入未结算货款中',
+						all_payment_for_goods : '总货款：1000',
+						surplus_free_supply : 0,
+						unsettled_payment : '1000',
+						settled_payment : '0',
+						time : '2018-02-08'
 					}
 				]
 			}
