@@ -2,9 +2,10 @@
 	<div class="">
 		<el-row class='search-header' :gutter="10" >
 			<el-col :span='8'>
+				提交时间：
 				<el-date-picker
 				  	v-model="time"
-				  	type="datetimerange"
+				  	type="daterange"
 				  	format='yyyy-MM-dd'
 				  	value-format='yyyy-MM-dd'
 				  	start-placeholder="开始时间"
@@ -13,18 +14,19 @@
 			</el-col>
 			<el-col :span='3'>
 				<el-select v-model='search_type'>
-					<el-option label='商品名称' value='1'></el-option>
-					<el-option label='商品ID' value='2'></el-option>
-					<el-option label='供货商名称' value='3'></el-option>
-					<el-option label='供货商ID' value='4'></el-option>
+					<el-option label='商品ID' value='1'></el-option>
+					<el-option label='商品名称' value='2'></el-option>
+					<el-option label='供货商ID' value='3'></el-option>
+					<el-option label='供货商名称' value='4'></el-option>
 					<el-option label='供货商电话' value='5'></el-option>
 				</el-select>
 			</el-col>
 			<el-col :span='4'>
 				<el-input placeholder="请输入搜索关键词" v-model="key_word"></el-input>
 			</el-col>
-			<el-col :span='2'>
-				<el-button type='primary' size="small" icon="el-icon-search">搜索</el-button>
+			<el-col :span='4'>
+				<el-button type='primary' size="small" icon="el-icon-search" @click='search'>搜索</el-button>
+				<el-button type='danger' size="small"  @click='resetSearch'>重置搜索条件</el-button>
 			</el-col>
 		</el-row>
 		<!-- 数据表格 -->
@@ -89,13 +91,13 @@
 			<el-table-column prop='id' label='商品ID'></el-table-column>
 			<el-table-column prop='product_title' label='商品图片'>
 				<template slot-scope='scope'>
-					<img :src="scope.row.img" alt="" width="80px">
+					<img :src="scope.row.cover" alt="" width="80px">
 				</template>
 			</el-table-column>
-			<el-table-column prop='product_title' label='商品名称'></el-table-column>
+			<el-table-column prop='name' label='商品名称'></el-table-column>
 			<el-table-column prop='supply_price' label='供应价'></el-table-column>
-			<el-table-column prop='supply_factory_name' label='供货商名称'></el-table-column>
-			<el-table-column prop='time' label='提交仓库时间'></el-table-column>
+			<el-table-column prop='factory_name' label='供货商名称'></el-table-column>
+			<el-table-column prop='add_time' label='提交仓库时间'></el-table-column>
 			<el-table-column fixed='right' label='操作' width='200'>
 				<template slot-scope="scope">
 					<el-button type="text" size="small">详情</el-button>
@@ -108,7 +110,7 @@
 			<el-pagination
 			  background
 			  layout="prev, pager, next"
-			  :total="1000">
+			  :total="total">
 			</el-pagination>
 		</div>
 		<!-- 上架设置商品 -->
@@ -157,6 +159,9 @@
 					}
 					
 				],
+				page :1,
+				limit :10,
+				total :1,
 				selectList : [],//多选列表数据，存储的是商品的ID数组
 				disabled : true,//是否禁用批量下架按钮
 				expand_row_keys : [],//展开的table-column
@@ -164,10 +169,40 @@
 			}
 		},
 		created () {
-			
+			this.initData();
 		},
 		
 		methods : {
+			initData(){
+				this.http.post('/v1/a_goods/getWaitSale',{
+					page : this.page,
+					limit : this.limit,
+					id : this.search_type == '1' ? this.key_word : null,
+					name : this.search_type == '2' ? this.key_word : null,
+					factoryId : this.search_type == '3' ? this.key_word : null,
+					factoryName : this.search_type == '4' ? this.key_word : null,
+					factoryTel : this.search_type == '5' ? this.key_word : null,
+					startTime : this.time ? this.time[0] : null,
+					endTime : this.time ? this.time[0] : null,
+				}).then(res => {
+					this.list = res.data.data;
+					this.total = res.data.total;
+					console.log(res)
+				})
+			},
+			//搜索
+			search () {
+				this.page = 1;
+				this.initData();
+			},
+			//重置搜索
+			resetSearch () {
+				this.page = 1;
+				this.search_type = '1',
+				this.key_word = null;
+				this.time = null;
+				this.initData()
+			},
 			//多选
 			handleSelectionChange(val){
 				

@@ -63,6 +63,10 @@ let menu = [
 		index : '12',
 		sub_menu : [
 			{
+				id : '12-3',
+				name : '首页轮播图维护',
+				path : '/index/swiper-config'
+			},{
 				id : '12-1',
 				name : '广告橱窗',
 				path : '/index/display-window'

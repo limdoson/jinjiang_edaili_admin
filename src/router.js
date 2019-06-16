@@ -1,21 +1,30 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import Store from './store.js'
 Vue.use(Router)
 
 let router = new Router({
     base : process.env.NODE_ENV == 'development' ? './' : '/admin/',
     mode : 'hash',
     routes : [
-        {
+        {//登录页
             path : '/',
 			component : () => import('./views/Login'),
-        },{
+        },{//修改密码
+			path : '/reset-pwd',
+			component : () => import('./views/ResetPwd'),
+		},{
             path : '/index',
             component : () => import('./views/Layout'),
+			meta : {
+				auth_test : true
+			},
             children : [
                 {
                     path : '',
+					meta : {
+						auth_test : true
+					},
                     component : () => import('./views/Home')
                 },{//基础设置
                     path : 'basic-setting',
@@ -53,6 +62,12 @@ let router = new Router({
 				},{//运费策略
 					path : 'express-setting',
 					component : () => import('./views/express/Index'),
+				},{//轮播图管理
+					path : 'swiper-config',
+					component : () => import('./views/window/SwiperConfig'),
+				},{//轮播图添加编辑
+					path : 'swiper-handle/:id?',
+					component : () => import('./views/window/SwiperHandle'),
 				},{//广告橱窗
 					path : 'display-window',
 					component : () => import('./views/window/Index'),
@@ -100,7 +115,7 @@ let router = new Router({
 					path : 'factory-add',
 					component : () => import('./views/factory/Add'),
 				},{//供应商详情
-					path : 'factory-detail',
+					path : 'factory-detail/:id',
 					component : () => import('./views/factory/Detail'),
 				},{//供应商订单
 					path : 'factory-order',
@@ -168,5 +183,17 @@ let router = new Router({
     ]
 })
 
+
+// 全局路由守卫
+router.beforeEach((to,form,next) => {
+	// console.log(to)
+	if (to.meta.auth_test) {
+		//验证是否有路由访问权限
+		console.log(Store);
+		next();
+	} else {
+		next()
+	}
+})
 
 export default router;

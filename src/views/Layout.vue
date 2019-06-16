@@ -11,10 +11,8 @@
 				    超级管理员<i class="el-icon-arrow-down el-icon--right"></i>
 			  	</span>
 			  	<el-dropdown-menu slot="dropdown">
-				    <el-dropdown-item command="a" >修改密码</el-dropdown-item>
-				    <el-dropdown-item command="b">待办事项</el-dropdown-item>
-				    <el-dropdown-item command="c">使用文档</el-dropdown-item>
-				    <el-dropdown-item command="e" divided>退出登录</el-dropdown-item>
+				    <el-dropdown-item command="resetPwd" >修改密码</el-dropdown-item>
+				    <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
 			  	</el-dropdown-menu>
 			</el-dropdown>
 		</el-header>
@@ -39,13 +37,29 @@
 			}
 		},
 		created  () {
-			
+			// console.log(this.$store.state)
 		},
 		//mounted () {},
 		methods : {
+			//管理员右上角菜单选项
 			handleCommand(command) {
-        		this.$message('click on item ' + command);
-      		}
+				switch (command){
+					case 'resetPwd'://重置密码
+						this.$router.push('/reset-pwd')
+						break;
+					case 'logout'://退出登录
+						this.logout()
+						break;
+				}
+      		},
+			//退出登录方法
+			logout () {
+				this.http.post('/v1/a_admin/logout',{
+					
+				}).then(res => {
+					this.$router.replace('/')
+				})
+			}
 		}
 	}
 </script>
