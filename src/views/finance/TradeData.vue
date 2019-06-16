@@ -38,9 +38,6 @@
 			<el-table-column prop='id' label='ID'>
 				
 			</el-table-column>
-			<el-table-column prop='title' label='流水项目名称'>
-				
-			</el-table-column>
 			<el-table-column prop='order_ind' label='订单编号'>
 				
 			</el-table-column>
@@ -52,7 +49,13 @@
 			<el-table-column prop='pay_ind' label='支付单号'>
 				
 			</el-table-column>
-			<el-table-column prop='money' label='金额'>
+			<el-table-column prop='money' label='商品金额'>
+				
+			</el-table-column>
+			<el-table-column prop='money' label='运费'>
+				
+			</el-table-column>
+			<el-table-column prop='money' label='订单金额'>
 				
 			</el-table-column>
 			<el-table-column prop='created_at' label='时间'>

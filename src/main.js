@@ -12,6 +12,18 @@ Vue.use(ElementUI)
 import utils from '@u/index';
 Vue.prototype.utils = utils;
 
+import http from '@u/http';
+Vue.prototype.http = http;
+
+
+//导入配置项
+import config from '@cfg/index'
+Vue.prototype._config = config;
+
+//引入全局注册组件方法
+import vComponent from '@u/reg-components'
+Vue.use(vComponent);
+
 
 Vue.config.productionTip = false
 

@@ -27,17 +27,21 @@
 			header-row-class-name='bg-table-header'
 			:header-cell-style = "{backgroundColor: '#fafafa'}"
 			ref="multipleTable">
-			<el-table-column prop='id' label='厂商ID'></el-table-column>
-			<el-table-column prop='factory_name' label='厂商名称'></el-table-column>
-			<el-table-column prop='user_name' label='厂商联系人姓名'></el-table-column>
-			<el-table-column prop='phone' label='厂商联系人手机'></el-table-column>
-			<el-table-column prop='free_supply' label='无偿供货金额(元)'></el-table-column>
-			<el-table-column prop='unsettled_amount' label='未结算货款(元)'></el-table-column>
-			<el-table-column prop='time' label='添加时间'></el-table-column>
-			<el-table-column fixed='right' label='操作' width='200'>
+			<!-- <el-table-column prop='id' label='厂商ID'></el-table-column> -->
+			<el-table-column prop='name' label='厂商名称'></el-table-column>
+			<el-table-column prop='realname' label='厂商联系人姓名'></el-table-column>
+			<el-table-column prop='tel' label='手机号码'></el-table-column>
+			<el-table-column prop='gratis' label='无偿供货金额(元)'></el-table-column>
+			<el-table-column prop='wait_goods_money' label='未结算货款(元)'></el-table-column>
+			<el-table-column prop='wait_fare' label='未结算运费(元)'></el-table-column>
+			<!-- <el-table-column prop='time' label='添加时间'></el-table-column> -->
+			<el-table-column fixed='right' label='操作' width='320'>
 				<template slot-scope="scope">
-					<el-button type="text" size="small">详情</el-button>
+					<el-button type="text" size="small" @click="$router.push('factory-detail/'+scope.row.id)">详情</el-button>
 					<el-button type="text" size="small" @click='showDialog(scope.row)'>结算货款</el-button>
+					<el-button type="text" size="small" @click='showDialogExpress(scope.row)'>结算运费</el-button>
+					<el-button type="text" size="small" @click="$router.push('factory-order')">查看订单</el-button>
+					<el-button type="text" size="small" @click="deleteItem(scope.row.id)">删除供应商</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -47,12 +51,12 @@
 			<el-pagination
 			  background
 			  layout="prev, pager, next"
-			  :total="1000">
+			  :total="total">
 			</el-pagination>
 		</div>
-		<!-- 结算dialog -->
+		<!-- 结算货款dialog -->
 		<el-dialog 
-			title='结算' 
+			title='货款结算' 
 			:visible.sync='show_dialog' 
 			:append-to-body='true'
 			:close-on-click-modal='false'
@@ -69,6 +73,20 @@
 			    <el-button type="primary" @click="curfirm" size='small'>确 定</el-button>
 		  	</span>
 		</el-dialog>
+		<!-- 结算运费dialog -->
+		<el-dialog 
+			title='运费结算' 
+			:visible.sync='show_dialog_express' 
+			:append-to-body='true'
+			:close-on-click-modal='false'
+			:close-on-press-escape='false'
+			:show-close='false'>
+			<el-input v-model='settled_amount_express' type='number' placeholder="请输入结算金额"></el-input>
+			<span slot="footer" class="dialog-footer">
+			    <el-button @click="cancleExpress" size='small'>取 消</el-button>
+			    <el-button type="primary" @click="curfirmExpress" size='small'>确 定</el-button>
+		  	</span>
+		</el-dialog>
 	</div>
 </template>
 
@@ -77,39 +95,38 @@
 		components: {},
 		data () {
 			return {
+				limit : 10,
+				page :1,
+				total  :1,
 				search_type : '1',
 				key_word : null,
-				list : [
-					{
-						id : 1,
-						factory_name : 'xx工厂',
-						user_name : '陈厂长',
-						phone : 15960209969,
-						time : '2018-08-08',
-						free_supply : 50000,
-						unsettled_amount : 0
-					},{
-						id : 2,
-						factory_name : 'xx工厂',
-						user_name : '陈厂长',
-						phone : 15960209969,
-						time : '2018-08-08',
-						free_supply : 0,
-						unsettled_amount : 4000
-					}
-					
-				],
+				list : null,
 				show_dialog : false,
+				show_dialog_express : false,
 				settled_amount : null,//dialog中的结算金额
+				settled_amount_express : null,//dialog中的结算运费金额
 			}
 		},
 		created () {
-			
+			this.initData()
 		},
 		
 		methods : {
+			initData(){
+				this.http.post('/v1/a_factory/getAll',{
+					limit : this.limit,
+					page : this.page
+				}).then(res => {
+					console.log(res)
+					this.list = res.data.data;
+					this.total = res.total;
+				})
+			},
 			showDialog (item) {
 				this.show_dialog = true;
+			},
+			showDialogExpress (item) {
+				this.show_dialog_express = true;
 			},
 			cancle () {
 				this.show_dialog = false;
@@ -124,6 +141,48 @@
 					this.utils.msg('结算金额必须大于0');
 					return;
 				}
+			},
+			cancleExpress () {
+				this.show_dialog_express = false;
+				this.settled_amount_express = null;
+			},
+			curfirmExpress () {
+				if (!this.settled_amount_express) {
+					this.utils.msg('请输入结算金额');
+					return;
+				}
+				if (this.settled_amount_express <= 0) {
+					this.utils.msg('结算金额必须大于0');
+					return;
+				}
+			},
+			search () {
+				
+			},
+			// 删除供应商
+			deleteItem (id) {
+				this.$alert('删除供应商后，该供应商对应的商品/财务等数据都将一起被删除，您确定删除供应商吗？', '警告', {
+					confirmButtonText: '确定',
+					showCancelButton :true,
+					callback: action => {
+						if ( action == 'confirm' ) {
+							this.http.post('/v1/a_factory/del',{
+								id : id
+							}).then(res => {
+								//删除成功回调
+								this.$alert('删除成功','提示',{
+									confirmButtonText : '确定',
+									closeOnClickModal : false,
+									closeOnPressEscape : false,
+									showClose : false,
+									callback : action => {
+										this.initData();
+									}
+								})
+							})
+						}
+					}
+				});
 			}
 		},
 		//mounted () {},

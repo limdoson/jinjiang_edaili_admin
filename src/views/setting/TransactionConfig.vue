@@ -1,7 +1,27 @@
 <template>
 	<div class="transaction-config">
 		<div class="form-container">
+			
 			<el-form label-width="180px">
+				<el-form-item label="分销商申请是否需要审核">
+					<el-switch
+						v-model='examine_needed'
+						active-text="需要审核"
+						inactive-text="无需审核"></el-switch>
+				</el-form-item>
+				<el-form-item label="分销申请条件">
+					<el-checkbox-group v-model="fx_update_config" @change='change'>
+						<el-checkbox label="1" >免费申请</el-checkbox>
+						<el-checkbox label='2'>消费满额</el-checkbox>
+						<el-checkbox label="3">充值满额</el-checkbox>
+					</el-checkbox-group>
+				</el-form-item>
+				<el-form-item label="升级分销所需消费额度" v-if='need_pay'>
+					<el-input v-model="need_pay_account"></el-input>
+				</el-form-item>
+				<el-form-item label="升级分销所需充值额度" v-if='need_recharge'>
+					<el-input v-model="need_recharge_account"></el-input>
+				</el-form-item>
 				<el-form-item label='分销等级设置'>
 					<el-input readonly v-model='fx_level' style='width: 120px;'></el-input>
 					<el-button type="primary" size="small" style='margin-left: 10px;' @click='addFxLevel()'>添加</el-button>
@@ -61,7 +81,7 @@
 					</el-alert>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" size="small">保存设置</el-button>
+					<el-button type="primary" size="small" @click='save'>保存设置</el-button>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -72,7 +92,11 @@
 		components : {},
 		data () {
 			return {
+				examine_needed : false,//分销是否需要审核
 				fx_level : 2,//分销等级
+				fx_update_config : ['1'],
+				need_pay_account : null,//升级分销所需消费额度
+				need_recharge_account : null,//升级分销所需充值额度
 				fx_rules_list : [
 					{
 						rate : 10
@@ -101,8 +125,27 @@
 		created  () {
 			
 		},
+		computed : {
+			need_pay () {
+				if (this.fx_update_config.indexOf('2') > -1) {
+					return true;
+				} else {
+					return false
+				}
+			},
+			need_recharge () {
+				if (this.fx_update_config.indexOf('3') > -1) {
+					return true;
+				} else {
+					return false
+				}
+			}
+		},
 		//mounted () {},
 		methods : {
+			change () {
+				console.log(this.fx_update_config)
+			},
 			/* 
 			* 增加分销等级
 			*  */
@@ -147,23 +190,20 @@
 			 * 保存设置
 			 */
 			save () {
-				if (this.day_unit < 1 || this.time_unit < 1) {
-					this.utils.msg('交易频次最小设置值为每1天可交易1手');
+				if (this.need_pay && !this.need_pay_account) {
+					this.utils.msg('请填写升级分销所需消费额度');
 					return;
 				}
-				if (!this.default_buy_price || !this.default_buy_price) {
-					this.utils.msg('请设置默认买进价格及默认卖出价格');
+				if (this.need_recharge && !this.need_recharge_acount) {
+					this.utils.msg('请填写升级分销所需充值额度');
 					return;
 				}
-				if (this.default_buy_price <= 0 || this.default_sale_price <= 0) {
-					this.utils.msg('默认买进价格及默认卖出价格必须大于0');
+				if ( !this.fx_rules_list.every(item =>  item.rate > 0) ) {
+					this.utils.msg('请完善分销等级对应分销比例');
 					return;
 				}
-				let flag = this.rules_list.every(item => {
-					return item.price > 0 && item.coin > 0
-				})
-				if (!flag) {
-					this.utils.msg('请设置正确的团队奖励规则');
+				if ( !this.rules_list.every(item => item.discount > 0 && item.payment > 0 && item.name) ) {
+					this.utils.msg('请完善代理等级对应代理名称、进货折扣、缴费金额设置');
 					return;
 				}
 			}
