@@ -86,6 +86,10 @@ let router = new Router({
 				},{//商品分类设置
 					path : '/index/product-cls',
 					component : () => import('./views/product/ProductCls'),
+				},{//查看子级分类
+					path : '/index/product-sub-cls/:id?',
+					name : 'product-sub-cls',
+					component : () => import('./views/product/ProductSubCls'),
 				},{//商品规格属性管理
 					path : 'product-attr-setting',
 					component : () => import('./views/product/ProductAttrSetting'),
