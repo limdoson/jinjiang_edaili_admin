@@ -41,25 +41,26 @@
 			stripe
 			ref="multipleTable">
 			<el-table-column
-			      	type="selection"
-			      	width="80">
-			    </el-table-column>
+				type="selection"
+				width="80">
+			</el-table-column>
 			<el-table-column prop='id' label='商品ID'></el-table-column>
-			<el-table-column prop='product_title' label='商品图片'>
+			<el-table-column prop='' label='商品图片'>
 				<template slot-scope='scope'>
-					<img :src="scope.row.img" alt="" width="80px">
+					<img :src="scope.row.cover" alt="" width="80px">
 				</template>
 			</el-table-column>
-			<el-table-column prop='product_title' label='商品名称'></el-table-column>
+			<el-table-column prop='name' label='商品名称'></el-table-column>
 			<el-table-column prop='supply_price' label='供应价'></el-table-column>
-			<el-table-column prop='market_price' label='售价'></el-table-column>
-			<el-table-column prop='supply_factory_name' label='供货商名称'></el-table-column>
-			<el-table-column prop='sales_volume' label='累计销量'></el-table-column>
-			<el-table-column prop='time' label='上架时间'></el-table-column>
-			<el-table-column fixed='right' label='操作' width='200'>
+			<el-table-column prop='price' label='售价'></el-table-column>
+			<el-table-column prop='factory_name' label='供货商名称'></el-table-column>
+			<el-table-column prop='sale' label='累计销量'></el-table-column>
+			<!-- <el-table-column prop='time' label='上架时间'></el-table-column> -->
+			<el-table-column fixed='right' label='操作' width='240'>
 				<template slot-scope="scope">
 					<el-button type="text" size="small" @click="offShelf(scope.row.id)">下架商品</el-button>
 					<el-button type="text" size="small" @click="$router.push('product-buy-record')">购买记录</el-button>
+					<el-button type="text" size="small" @click="$router.push('product-detail/'+scope.row.id)">商品详情</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -82,19 +83,7 @@
 				time : null,//搜索时间区间
 				search_type : '1',
 				key_word : null,//搜索关键词
-				list :[//商品数据
-					{
-						id :1,
-						product_title : '商品名称',//商品名称
-						img : 'http://flag.xmwxxx.com/img/entrep.7379ab52.png',//商品图片
-						supply_price : '供应价',//供应价
-						market_price : '售价',//售价
-						supply_factory_name : '供应厂家名称',//供应厂家名称
-						sales_volume : 1000,//销量
-						time : '2019-08-08'
-					}
-					
-				],
+				list :null,
 				selectList : [],//多选列表数据，存储的是商品的ID数组
 				disabled : true,//是否禁用批量下架按钮
 				page :1,
@@ -119,7 +108,8 @@
 					startTime : this.time ? this.time[0] : null,
 					endTime : this.time ? this.time[0] : null,
 				}).then(res => {
-					this.list = res.data;
+					console.log(res)
+					this.list = res.data.data;
 				})
 			},
 			//商品搜索

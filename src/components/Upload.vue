@@ -69,6 +69,6 @@
 </script>
 <style scoped>
 	img {
-		width: 180px;
+		width: 80px;
 	}
 </style>

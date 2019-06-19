@@ -35,42 +35,40 @@
 			:header-cell-style = "{backgroundColor: '#fafafa'}"
 			stripe
 			row-key="id"
-			:expand-row-keys='expand_row_keys'
-			@expand-change='expandChange'>
+			:expand-row-keys='expand_row_keys'>
 			<!-- <el-table-column
 			      	type="selection"
 			      	width="80">
 			    </el-table-column> -->
 			<el-table-column type="expand">
-				<template slot-scope='props'>
+				<template slot-scope='scope'>
 					<!-- 有多属性的商品 -->
-					<div  v-if='props.row.attr_arr'>
-						<el-form  label-width='180px' class="f-s" v-for="(item,index) in props.row.attr_arr" :key='index'>
+					<div  v-if='scope.row.attrubute && scope.row.attrubute.length > 0'>
+						<el-form  label-width='180px' class="f-s" v-for="(item,index) in scope.row.attrubute" :key='index'>
 							<el-form-item >
-								{{item.attr_title}}
+								{{item.name}}
 							</el-form-item>
 							<el-form-item label="供应价">
 								<span class="red" >{{item.supply_price}}元</span>
 							</el-form-item>
 							<el-form-item label="售价">
-								<el-input placeholder="请设置该规格属性售价"  v-model='item.market_price'></el-input>
+								<el-input placeholder="请设置该规格属性售价" type="number" v-model='item.price'></el-input>
 							</el-form-item>
 						</el-form>
-						
 					</div>
 					<!-- 无多规格的商品 -->
 					<div v-else>
 						<el-form  label-width='180px' class="f-s">
 							<el-form-item label="供应价">
-								<span class="red">{{props.row.supply_price}}元</span>
+								<span class="red">{{scope.row.supply_price}}元</span>
 							</el-form-item>
 							<el-form-item label="售价">
-								<el-input placeholder="请设置该规格属性售价" v-model="props.row.market_price"></el-input>
+								<el-input placeholder="请设置该规格属性售价" type="price" v-model="scope.row.price"></el-input>
 							</el-form-item>
 						</el-form>
 					</div>
 					<div class="text-center">
-						<el-button type="primary" size="small" @click='curfirmCommodityShelves'>确认上架</el-button>
+						<el-button type="primary" size="small" @click="curfirmCommodityShelves(scope.row)">确认上架</el-button>
 					</div>
 				</template>
 				<!-- <template v-else slot-scope='props'>
@@ -100,7 +98,7 @@
 			<el-table-column prop='add_time' label='提交仓库时间'></el-table-column>
 			<el-table-column fixed='right' label='操作' width='200'>
 				<template slot-scope="scope">
-					<el-button type="text" size="small">详情</el-button>
+					<el-button type="text" size="small" @click="$router.push('product-detail/'+scope.row.id)">详情</el-button>
 					<el-button type="text" size="small" @click='commodityShelves(scope.row)'>上架商品</el-button>
 				</template>
 			</el-table-column>
@@ -187,7 +185,6 @@
 				}).then(res => {
 					this.list = res.data.data;
 					this.total = res.data.total;
-					console.log(res)
 				})
 			},
 			//搜索
@@ -214,26 +211,43 @@
 			commodityShelves (item) {
 				this.expand_row_keys = [];
 				this.expand_row_keys.push(item.id)
-				this.row_tmp = item;
-			},
-			//监听表格展开
-			expandChange (row) {
-				this.expand_row_keys = [];
-				this.expand_row_keys.push(row.id)
-				this.row_tmp = row;
 			},
 			//确认上架
-			curfirmCommodityShelves () {
+			curfirmCommodityShelves (row) {
+				//判断该商品是否有规格属性，如果有，则判断每个属性是否都设置了价格
+				//如果没有属性，判断商品是否设置了价格
+				if (row.attrubute && row.attrubute.length > 0) {
+					if (!row.attrubute.every(item => {return item.price > 0})) {
+						this.utils.msg('请设置该商品所有规格属性对应售价');
+						return;
+					};
+					this.http.post('/v1/a_goods/upGoods',{
+						id : row.id,
+						attributePrice : JSON.stringify(row.attrubute)
+					}).then(res => {
+						this.$message({
+							showIcon : true,
+							type : 'success',
+							message : '上架成功'
+						})
+						this.initData();
+
+					})
+				} else {//无属性
+					this.http.post('/v1/a_goods/upGoods',{
+						id : row.id,
+						price : row.price
+					}).then(res => {
+						this.$message({
+							showIcon : true,
+							type : 'success',
+							message : '上架成功'
+						})
+						this.initData();
+					
+					})
+				}
 				
-				if (this.row_tmp.attr_arr && !this.row_tmp.attr_arr.every( item => {return item.market_price > 0} )) {
-					this.utils.msg('请设置该商品所有规格属性对应售价');
-					return;
-				}
-				if (!this.row_tmp.attr_arr && !this.row_tmp.market_price) {
-					this.utils.msg('请设置该商品的售价');
-					return;
-				}
-				console.log(this.row_tmp)
 			}
 		},
 		watch : {

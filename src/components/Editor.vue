@@ -10,8 +10,7 @@
 			class="avatar-uploader"
 			:action="serverUrl"
 			accept=".jpg,.png,.jpeg"
-			name="cert"
-			multiple
+			name="img"
 			:show-file-list="false"
 			:on-success="uploadSuccess"
 			:on-error="uploadError"
@@ -21,17 +20,17 @@
 </template>
 
 <script>
-	import config from '../config/index.js'
 	import 'quill/dist/quill.core.css'
 	import 'quill/dist/quill.snow.css'
 	import 'quill/dist/quill.bubble.css'
 	import {quillEditor, Quill} from 'vue-quill-editor'
 	export default {
 		components: {quillEditor},
+		props : ['value'],
 		data () {
 			return {
-				content : '',
-				serverUrl : 'http://flag.xmwxxx.com/admin/wechat/upload',
+				content : this.value,
+				serverUrl : this._config.img_upload_host,
 				editorOption : {
 					placeholder: '请输入内容',
 				    theme: 'snow',  // or 'bubble'
@@ -62,14 +61,16 @@
 		created () {
 			
 		},
-		
+		mounted () {
+			this.$refs.myQuillEditor.$el.childNodes[2].style.height = '400px'
+		},
 		methods : {
 			editorChange (e) {
-				this.$emit('change',this.content);
+				this.$emit('input',this.content);
 			},
 			beforeUpload (file) {
 				//限制文件大小
-				let size = (file.size / 1024 / 1024) < config.upload_img_size;
+				let size = (file.size / 1024 / 1024) < this._config.upload_img_size;
 				if (!size) {
 					this.$message.error('上传图片大小不能超过600KB');
 				} else {
@@ -86,12 +87,13 @@
 			},
 			uploadSuccess (res, file) {
 				let quill = this.$refs.myQuillEditor.quill
+				
 			    // 如果上传成功
 			    if (res.code == '200' ) {
 			        // 获取光标所在位置
 			        let length = quill.getSelection().index;
 			        // 插入图片  res.info为服务器返回的图片地址
-			        quill.insertEmbed(length, 'image', 'http://flag.xmwxxx.com/img/entrep.7379ab52.png')
+			        quill.insertEmbed(length, 'image', res.data)
 			        // 调整光标到最后
 			        quill.setSelection(length + 1)
 			    } else {
@@ -107,6 +109,11 @@
 			    this.$message.error('图片插入失败')
 			},
 		},
+		watch : {
+			value (n) {
+				this.content = n;
+			}
+		}
 		//mounted () {},
 		// watch () {
 		// 	a (n,o) {
@@ -120,3 +127,8 @@
 		// },
 	}
 </script>
+<style scoped>
+	.ql-editor {
+		height: 400px;
+	}
+</style>

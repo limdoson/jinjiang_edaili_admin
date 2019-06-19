@@ -44,6 +44,9 @@ class Http extends Vue {
 					case 100: //正常错误
 					    this.utils.msg(res.data.msg)
 					    break;
+					case 101: //参数不全
+					    this.utils.msg(res.data.msg)
+					    break;
 					case 110: //未登录
 						this.$alert('登录状态失效，请重新登录', '提示', {
 							confirmButtonText: '确定',

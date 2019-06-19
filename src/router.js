@@ -83,6 +83,9 @@ let router = new Router({
 				},{//商品云仓库
 					path : 'product-store',
 					component : () => import('./views/product/ProductStore'),
+				},{//商品详情
+					path : 'product-detail/:id',
+					component : () => import('./views/product/ProductDetail'),
 				},{//商品分类设置
 					path : '/index/product-cls',
 					component : () => import('./views/product/ProductCls'),
