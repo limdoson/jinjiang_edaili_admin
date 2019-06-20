@@ -11,22 +11,22 @@
 				</el-select>
 			</el-col>
 			<el-col :span='4'>
-				<el-input></el-input>
+				<el-input v-model="key_wrod"></el-input>
 			</el-col>
 			<el-col :span='2'>
-				<el-button type='primary' size="small" icon="el-icon-search">搜索</el-button>
+				<el-button type='primary' size="small" icon="el-icon-search" @click='search'>搜索</el-button>
 			</el-col>
 		</el-row>
 		<!--  -->
 		<el-row :gutter="10" class='search-header' style='padding-top: 10px;'>
 			<el-col :span='2'>
-				<el-button type='primary' size="small" >全部用户</el-button>
+				<el-button type='primary' size="small" @click="getTypeData(0)">全部用户</el-button>
 			</el-col>
 			<el-col :span='2'>
-				<el-button type='success' size="small" >普通用户</el-button>
+				<el-button type='success' size="small" @click="getTypeData(1)">普通用户</el-button>
 			</el-col>
 			<el-col :span='2'>
-				<el-button type='danger' size="small" >分销商</el-button>
+				<el-button type='danger' size="small" @click="getTypeData(2)">分销商</el-button>
 			</el-col>
 		</el-row>
 		<!-- 数据表 -->
@@ -36,26 +36,31 @@
 			stripe
 			ref="multipleTable">
 			<el-table-column prop='id' label='ID'></el-table-column>
-			<el-table-column prop='nick_name' label='昵称'></el-table-column>
-			<el-table-column prop='real_name' label='真实姓名'></el-table-column>
+			
+			<el-table-column prop='realname' label='真实姓名'></el-table-column>
+			<el-table-column prop='tel' label='电话'></el-table-column>
 			<el-table-column prop='user_identity' label="推荐人(ID)">
 				<template slot-scope='scope'>
-					{{scope.row.recommender}}（{{scope.row.recommender_id}}）
+					{{scope.row.recommend}}
 				</template>
 			</el-table-column>
-			<el-table-column prop='user_identity' label="用户身份"></el-table-column>
-			<el-table-column prop='team_count' label='团队人数'></el-table-column>
+			<el-table-column  label="用户身份">
+				<template slot-scope='scope'>
+					{{scope.row.type == 1 ? '普通用户' : '分销商'}}
+				</template>
+			</el-table-column>
+			<el-table-column prop='team_num' label='团队人数'></el-table-column>
 			<el-table-column prop='balance' label='账户余额'></el-table-column>
-			<el-table-column prop=''></el-table-column>
-			<el-table-column prop='csp_amount' label='消费金额'></el-table-column>
-			<el-table-column prop='time' label='加入时间'></el-table-column>
-			<el-table-column fixed='right' label='操作' width='280'>
+			<el-table-column prop='wait_commission' label='待结算佣金'></el-table-column>
+			<el-table-column prop='pay_money' label='消费金额'></el-table-column>
+			<el-table-column prop='add_time' label='加入时间' width="180"></el-table-column>
+			<el-table-column fixed='right' label='操作' width='320'>
 				<template slot-scope="scope">
-					<el-button type='text' size='small' @click="$router.push('member-detail')">详情</el-button>
-					<el-button type='text' size='small' @click="$router.push('member-team/1')" v-if='scope.row.user_identity_status > 0'>团队成员</el-button>
+					<el-button type='text' size='small' @click="$router.push('member-detail/'+scope.row.id)">详情</el-button>
+					<el-button type='text' size='small' @click="$router.push('member-team/'+scope.row.id)" v-if='scope.row.type == 2'>团队成员</el-button>
 					<el-button type="text" size="small" @click='recharge'>账户充值</el-button>
-					<el-button type="text" size="small">转为普通用户</el-button>
-					<el-button type="text" size="small">转为分销商</el-button>
+					<el-button type="text" size="small" @click='changeUserType(scope.row,1)' v-if='scope.row.type == 2'>转为普通用户</el-button>
+					<el-button type="text" size="small" @click='changeUserType(scope.row,2)' v-if='scope.row.type == 1'>转为分销商</el-button>
 					<!-- <el-button type='text' size='small' @click='deleteItem(scope.row)'>删除</el-button> -->
 				</template>
 			</el-table-column>
@@ -64,9 +69,10 @@
 		<div class="pagination s-b">
 			<span></span>
 			<el-pagination
-			  background
-			  layout="prev, pager, next"
-			  :total="1000">
+				background
+				@current-change='currentChange'
+				layout="prev, pager, next"
+				:total="total">
 			</el-pagination>
 		</div>
 		<!-- 账户充值密码输入Dialog -->
@@ -106,33 +112,12 @@
 		data () {
 			return {
 				search_type : '1',//搜索类型
-				list : [
-					{
-						id :1,
-						nick_name : '林',
-						real_name : '林杜森',
-						team_count : 100,
-						balance : 20,
-						csp_amount : 1999,
-						user_identity_status : 1,
-						recommender : '林文峰',
-						recommender_id : 2,
-						user_identity : '分销商',
-						time : '1920-08-01'
-					},{
-						id :1,
-						nick_name : '林',
-						real_name : '林文峰',
-						team_count : '-',
-						balance : 20,
-						recommender : '-',
-						recommender_id : '-',
-						csp_amount : 1999,
-						user_identity_status : 0,
-						user_identity : '普通会员',
-						time : '1920-08-01'
-					}
-				],
+				key_wrod : null,
+				type : null,
+				list : null,
+				total : 1,
+				page :1,
+				limit : 10,
 				show_pwd_dialog : false,//显示输入密码dialog
 				show_recharge_dialog : false,//显示重置dialog
 				password : null,//操作安全码
@@ -142,10 +127,50 @@
 			
 		},
 		created () {
-			
+			this.initData();
 		},
 		
 		methods : {
+			initData (type) {
+				
+				this.http.post('/v1/a_user/getAll',{
+					page : this.page,
+					limit :this.limit,
+					type : this.type,
+					id : this.search_type == '1' ? this.key_wrod : null,
+					realname : this.search_type == '2' ? this.key_wrod : null,
+					tel : this.search_type == '3' ? this.key_wrod : null,
+				}).then(res => {
+					this.list = res.data.data;
+					this.total = res.data.total;
+					console.log(res.data)
+				})
+			},
+			//搜索用户
+			search () {
+				this.page = 1;
+				this.initData();
+			},
+			getTypeData (type) {
+				this.type = type;
+				this.page = 1;
+				this.initData();
+			},
+			//页码切换
+			currentChange (page) {
+				this.page = page;
+				this.initData();
+			},
+			//修改用户身份
+			changeUserType (item,type) {
+				this.http.post('/v1/a_user/conversionType',{
+					id : item.id,
+					type : type
+				}).then(res => {
+					this.utils.msg(res.msg);
+					this.initData();
+				})
+			},
 			//账户充值
 			recharge () {
 				//判断是否已输入密码

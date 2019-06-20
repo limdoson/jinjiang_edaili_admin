@@ -9,15 +9,21 @@ class Utils extends Vue {
      * 封装element-ui中的$confirm方法作为提示用
      * -msg : 提示内容
      */
-    msg (msg = null) {
+    msg (msg = null,cb) {
         if (!msg) {
            throw new Error('utils类中msg方法缺省必要参数msg')
         }
-        this.$confirm(msg,'提示',{
-            showClose : false, //是否显示右上角关闭按钮
-            showCancelButton :false,//是否显示取消按钮
-            closeOnClickModal :false,//是否允许点击mask关闭对话框
-        })
+		this.$alert(msg, '标题名称', {
+			confirmButtonText: '确定',
+			callback: action => {
+				cb && cb();
+			}
+        });
+        // this.$confirm(msg,'提示',{
+        //     showClose : false, //是否显示右上角关闭按钮
+        //     showCancelButton :false,//是否显示取消按钮
+        //     closeOnClickModal :false,//是否允许点击mask关闭对话框
+        // })
     }
 	/*
 	 用来根据二维数组，生成属性规格数据

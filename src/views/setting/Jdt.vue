@@ -4,37 +4,19 @@
 			type='primary' 
 			size='small' 
 			icon='el-icon-circle-plus-outline'
-			@click='showDialog = true'>添加权限</el-button>
+			@click='showDialog = true'>添加主权限</el-button>
 		<!--权限数据表格-->
 		<el-table
 			:data='list'
-			:header-cell-style = "{backgroundColor: '#fafafa'}"
-			stripe
-			ref="multipleTable"
-			@selection-change="handleSelectionChange">
-		 	<el-table-column
-		      	type="selection"
-		      	width="60">
-		    </el-table-column>
-			<el-table-column prop='id' label='ID'></el-table-column>
-			<el-table-column prop='name' label='路由名称'></el-table-column>
-			<el-table-column prop='path' label='路由'></el-table-column>
-			<el-table-column fixed='right' label='操作' width='200'>
-				<template slot-scope="scope">
-					<el-button type='text' size='small' @click='edit(scope.row)'>编辑</el-button>
-					<el-button type='text' size='small' @click='deleteItem(scope.row)'>删除</el-button>
+			:header-cell-style = "{backgroundColor: '#fafafa'}">
+			<el-table-column type="expand">
+				<template slot-scope="props">
+					
 				</template>
 			</el-table-column>
-		</el-table>
-		<!--分页-->
-		<div class="pagination s-b">
-			<span></span>
-			<el-pagination
-			  	background
-			  	layout="prev, pager, next"
-			  	:total="count">
-			</el-pagination>
-		</div>
+			<el-table-column label="上级路由名称"prop="name"></el-table-column>
+			<el-table-column label="上级路由名称"prop="name"></el-table-column>
+		 </el-table>
 		<!--添加权限弹出层-->
 		<el-dialog 
 			title='添加权限' 
@@ -45,9 +27,6 @@
 			<el-form ref="form" label-width="80px">
 				<el-form-item label='路由名称'>
 					<el-input type='text' v-model='route_name'></el-input>
-				</el-form-item>
-				<el-form-item label='路由路径'>
-					<el-input type='text' v-model='route_path'></el-input>
 				</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -62,11 +41,50 @@
 		components : {},
 		data () {
 			return {
+				tableData: [{
+          id: '12987122',
+          name: '好滋好味鸡蛋仔',
+          category: '江浙小吃、小吃零食',
+          desc: '荷兰优质淡奶，奶香浓而不腻',
+          address: '上海市普陀区真北路',
+          shop: '王小虎夫妻店',
+          shopId: '10333'
+        }, {
+          id: '12987123',
+          name: '好滋好味鸡蛋仔',
+          category: '江浙小吃、小吃零食',
+          desc: '荷兰优质淡奶，奶香浓而不腻',
+          address: '上海市普陀区真北路',
+          shop: '王小虎夫妻店',
+          shopId: '10333'
+        }, {
+          id: '12987125',
+          name: '好滋好味鸡蛋仔',
+          category: '江浙小吃、小吃零食',
+          desc: '荷兰优质淡奶，奶香浓而不腻',
+          address: '上海市普陀区真北路',
+          shop: '王小虎夫妻店',
+          shopId: '10333'
+        }, {
+          id: '12987126',
+          name: '好滋好味鸡蛋仔',
+          category: '江浙小吃、小吃零食',
+          desc: '荷兰优质淡奶，奶香浓而不腻',
+          address: '上海市普陀区真北路',
+          shop: '王小虎夫妻店',
+          shopId: '10333'
+        }],
 				list : [
 					{
 						id : 1,
 						name : '设置',
-						path : '/index'
+						children : [
+							{
+								id :2,
+								name : '基本设置',
+								path : '/index/basic-setting'
+							}
+						]
 					}
 				],
 				count : 1,
@@ -84,8 +102,7 @@
 						]
 					}
 				],
-				route_name : null,//dialog中路由名称
-				route_path : null,//dialog中路由路径
+				route_name : null,//dialog中主路由名称
 			}
 		},
 		created  () {

@@ -106,10 +106,11 @@ let router = new Router({
 					path : 'member-export',
 					component : () => import('./views/member/MemberExport'),
 				},{//用户信息详情，
-					path : 'member-detail',
+					path : 'member-detail/:id',
 					component : () => import('./views/member/Detail'),
 				},{//分销商团队成员
 					path : 'member-team/:id?',
+					name : 'member-team',
 					component : () => import('./views/member/Team'),
 					
 				},{//待审核分销商
@@ -134,7 +135,7 @@ let router = new Router({
 					path : '/index/agent-audited',
 					component : () => import('./views/agent/Audited'),
 				},{//代理详情
-					path : '/index/agent-detail',
+					path : '/index/agent-detail/:id',
 					component : () => import('./views/agent/Detail'),
 				},{//代理进货记录
 					path : '/index/agent-purchase-record',

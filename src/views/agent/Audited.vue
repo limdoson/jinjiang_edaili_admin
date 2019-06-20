@@ -10,10 +10,10 @@
 				</el-select>
 			</el-col>
 			<el-col :span='4'>
-				<el-input></el-input>
+				<el-input v-model="key_word" placeholder="请输入搜索关键词"></el-input>
 			</el-col>
 			<el-col :span='2'>
-				<el-button type='primary' size="small" icon="el-icon-search">搜索</el-button>
+				<el-button type='primary' size="small" icon="el-icon-search" @click='search'>搜索</el-button>
 			</el-col>
 		</el-row>
 		<!--  -->
@@ -23,15 +23,15 @@
 			stripe
 			ref="multipleTable">
 			<el-table-column prop='id' label='ID'></el-table-column>
-			<el-table-column prop='real_name' label='代理人姓名'></el-table-column>
-			<el-table-column prop='phone' label='手机号码'></el-table-column>
-			<el-table-column prop='agent_level' label='代理等级'></el-table-column>
+			<el-table-column prop='realname' label='代理人姓名'></el-table-column>
+			<el-table-column prop='tel' label='手机号码'></el-table-column>
+			<el-table-column prop='level_name' label='代理等级'></el-table-column>
 			<el-table-column prop='discount' label='拿货价折扣'></el-table-column>
-			<el-table-column prop='payment_of_goods' label='累计进货额'></el-table-column>
-			<el-table-column prop='recommender' label="推荐人"></el-table-column>
+			<el-table-column prop='purchase_amount' label='累计进货额'></el-table-column>
+			<el-table-column prop='recommend' label="推荐人"></el-table-column>
 			<el-table-column fixed='right' label='操作' width='200'>
 				<template slot-scope="scope">
-					<el-button type="text" size="small" @click="$router.push('agent-detail')">详情</el-button>
+					<el-button type="text" size="small" @click="$router.push('agent-detail/'+scope.row.id)">详情</el-button>
 					<el-button type="text" size="small" @click="$router.push('agent-purchase-record')">进货记录</el-button>
 				</template>
 			</el-table-column>
@@ -68,41 +68,34 @@
 		data () {
 			return {
 				search_type : '1',
-				list : [
-					{
-						id : 1,
-						real_name : '真实姓名',
-						phone : '15960209969',
-						agent_level : '1级代理',
-						discount : 7,
-						payment :  1000,
-						status : 1,//0未缴费，1已缴费
-						payment_of_goods : 1000,
-						time : '2018-05-05',
-						recommender : '林杜森'
-					},{
-						id : 1,
-						real_name : '真实姓名',
-						phone : '15960209969',
-						agent_level : '1级代理',
-						discount : 7,
-						payment :  1000,
-						payment_of_goods : 1000,
-						status : 0,//0未缴费，1已缴费
-						time : '2018-05-05',
-						recommender : '-'
-					}
-				],
+				key_word : null,
+				list : null,
 				show_reason_dialog : false,
 				reason_for_reject : null,//驳回原因
 				tmp_item : null,//用来存储操作过程中的中间变量
 			}
 		},
 		created () {
-			
+			this.initData();
 		},
 		
 		methods : {
+			initData () {
+				this.http.post('/v1/a_agent/getAll',{
+					page : this.page,
+					limit :this.limit,
+					realname : this.search_type == '1' ? this.key_word : null,
+					tel : this.search_type == '2' ? this.key_word : null,
+				}).then(res => {
+					this.list = res.data.data;
+					this.total = res.data.total;
+				})
+			},
+			//搜索
+			search () {
+				this.page = 1;
+				this.initData();
+			},
 			//表格通过申请操作
 			applyPassed (item) {
 				this.tmp_item = item;
