@@ -112,7 +112,6 @@ let router = new Router({
 					path : 'member-team/:id?',
 					name : 'member-team',
 					component : () => import('./views/member/Team'),
-					
 				},{//待审核分销商
 					path : 'member-unaudited',
 					component : () => import('./views/member/UnauditedMember'),
@@ -126,7 +125,7 @@ let router = new Router({
 					path : 'factory-detail/:id',
 					component : () => import('./views/factory/Detail'),
 				},{//供应商订单
-					path : 'factory-order',
+					path : 'factory-order/:id',
 					component : () => import('./views/factory/Order'),
 				},{//待审核代理
 					path : '/index/agent-unaudited',

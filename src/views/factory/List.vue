@@ -40,7 +40,7 @@
 					<el-button type="text" size="small" @click="$router.push('factory-detail/'+scope.row.id)">详情</el-button>
 					<el-button type="text" size="small" @click='showDialog(scope.row)'>结算货款</el-button>
 					<el-button type="text" size="small" @click='showDialogExpress(scope.row)'>结算运费</el-button>
-					<el-button type="text" size="small" @click="$router.push('factory-order')">查看订单</el-button>
+					<el-button type="text" size="small" @click="$router.push('factory-order/'+scope.row.id)">查看订单</el-button>
 					<el-button type="text" size="small" @click="deleteItem(scope.row.id)">删除供应商</el-button>
 				</template>
 			</el-table-column>

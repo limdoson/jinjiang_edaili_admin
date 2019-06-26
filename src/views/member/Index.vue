@@ -38,8 +38,8 @@
 			<el-table-column prop='id' label='ID'></el-table-column>
 			
 			<el-table-column prop='realname' label='真实姓名'></el-table-column>
-			<el-table-column prop='tel' label='电话'></el-table-column>
-			<el-table-column prop='user_identity' label="推荐人(ID)">
+			<el-table-column prop='tel' label='电话' width="120"></el-table-column>
+			<el-table-column prop='user_identity' label="推荐人(ID)" width="140">
 				<template slot-scope='scope'>
 					{{scope.row.recommend}}
 				</template>
@@ -54,7 +54,7 @@
 			<el-table-column prop='wait_commission' label='待结算佣金'></el-table-column>
 			<el-table-column prop='pay_money' label='消费金额'></el-table-column>
 			<el-table-column prop='add_time' label='加入时间' width="180"></el-table-column>
-			<el-table-column fixed='right' label='操作' width='320'>
+			<el-table-column fixed='right' label='操作' width='320' >
 				<template slot-scope="scope">
 					<el-button type='text' size='small' @click="$router.push('member-detail/'+scope.row.id)">详情</el-button>
 					<el-button type='text' size='small' @click="$router.push('member-team/'+scope.row.id)" v-if='scope.row.type == 2'>团队成员</el-button>

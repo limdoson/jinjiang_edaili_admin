@@ -8,18 +8,39 @@
 		<!--权限数据表格-->
 		<el-table
 			:data='list'
-			:header-cell-style = "{backgroundColor: '#fafafa'}">
+			ref='jdtTable'
+			:header-cell-style = "{backgroundColor: '#fafafa'}"
+			stripe>
 			<el-table-column type="expand">
-				<template slot-scope="props">
-					
+				<template slot-scope='scope'>
+					<el-table
+						:header-cell-style = "{backgroundColor: '#fafafa'}"
+						stripe
+						:data='scope.row.sub_jdt'>
+						<el-table-column prop="id" label="ID"></el-table-column>
+						<el-table-column prop="name" label="子路由名称"></el-table-column>
+						<el-table-column prop="path" label="子路由路径"></el-table-column>
+						<el-table-column prop="name" label="操作">
+							<template slot-scope='scope'>
+								<el-button type="text" size="small">删除</el-button>
+								<el-button type="text" size="small" @click='editItem(scope.row,true)'>编辑</el-button>
+							</template>
+						</el-table-column>
+					</el-table>
 				</template>
 			</el-table-column>
-			<el-table-column label="上级路由名称"prop="name"></el-table-column>
-			<el-table-column label="上级路由名称"prop="name"></el-table-column>
-		 </el-table>
+			<el-table-column prop="id" label="ID"></el-table-column>
+			<el-table-column prop="name" label="主路由名称"></el-table-column>
+			<el-table-column prop="name" label="操作">
+				<template slot-scope='scope'>
+					<el-button type="text" size="small" @click='add_sub(scope.row)'>添加下级路由</el-button>
+					<el-button type="text" size="small" @click='editItem(scope.row)'>编辑</el-button>
+					<el-button type="text" size="small">删除</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
 		<!--添加权限弹出层-->
-		<el-dialog 
-			title='添加权限' 
+		<el-dialog  
 			:visible.sync='showDialog' 
 			:append-to-body='true'
 			:close-on-click-modal='false'
@@ -27,6 +48,9 @@
 			<el-form ref="form" label-width="80px">
 				<el-form-item label='路由名称'>
 					<el-input type='text' v-model='route_name'></el-input>
+				</el-form-item>
+				<el-form-item label='路由路径' v-if='flag'>
+					<el-input type='text' v-model='route_path'></el-input>
 				</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -41,48 +65,15 @@
 		components : {},
 		data () {
 			return {
-				tableData: [{
-          id: '12987122',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987123',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987125',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987126',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }],
 				list : [
 					{
-						id : 1,
-						name : '设置',
-						children : [
+						id :1,
+						name : '系统设置',
+						sub_jdt : [
 							{
-								id :2,
+								value : 2,
 								name : '基本设置',
-								path : '/index/basic-setting'
+								path : '../abc.com'
 							}
 						]
 					}
@@ -103,6 +94,9 @@
 					}
 				],
 				route_name : null,//dialog中主路由名称
+				route_path : null,//dialog中路由路径
+				flag  : false,//用来标识是否是添加子权限
+				route_item_tmp : null,//用来存储权限数据的临时中间变量
 			}
 		},
 		created  () {
@@ -135,6 +129,24 @@
 				
 				this.resetInput();
 			},
+			//添加下级路由
+			add_sub (item) {
+				this.flag = true;
+				this.$refs.jdtTable.toggleRowExpansion(item);
+				this.showDialog = true;
+			},
+			//编辑路由
+			editItem (item,flag) {
+				this.route_item_tmp = item;
+				this.route_name = item.name;
+				this.route_path = item.path;
+				if (flag) {
+					this.flag = flag;
+				} else {
+					this.flag = true;
+				}
+				this.showDialog = true;
+			},
 			/*
 			 * 重置相关数据
 			 */
@@ -142,6 +154,7 @@
 				this.route_name = null;
 				this.route_path = null;
 				this.showDialog = false;
+				this.route_item_tmp = null;
 			}
 		}
 	}
