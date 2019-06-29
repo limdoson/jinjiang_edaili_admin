@@ -16,12 +16,12 @@
 			</el-table-column>
 			<el-table-column prop='id' label='ID'></el-table-column>
 			<el-table-column prop='name' label='分类名称'></el-table-column>
-			<el-table-column prop='product_title' label='分类广告图'>
+			<el-table-column prop='product_title' label='相关图片'>
 				<template slot-scope='scope'>
 					<img :src="scope.row.img" alt="" width="80px">
 				</template>
 			</el-table-column>
-			<el-table-column prop='url' label='广告图链接'></el-table-column>
+			<el-table-column prop='url' label='图片链接'></el-table-column>
 			<el-table-column fixed='right' label='操作' width='200'>
 				<template slot-scope="scope">
 					<el-button type="text" size="small" @click="$router.push('product-sub-cls/'+scope.row.id)">查看下级分类</el-button>
@@ -59,7 +59,7 @@
 				<el-form-item label='分类名称'>
 					<el-input v-model="add_cls_title" placeholder="请填写分类名称"></el-input>
 				</el-form-item>
-				<el-form-item label="分类图片" v-if='!add_cls_parent'>
+				<el-form-item label="相关图片" >
 					<up-load v-model='add_cls_img'></up-load>
 				</el-form-item>
 				<el-form-item label='图片链接'>
@@ -93,7 +93,7 @@
 				<el-form-item label="分类图片" >
 					<up-load v-model='edit_item.img'></up-load>
 				</el-form-item>
-				<el-form-item label='图片链接' v-if='edit_item.url'>
+				<el-form-item label='图片链接' >
 					<el-input v-model="edit_item.url" placeholder=""></el-input>
 				</el-form-item>
 			</el-form>
@@ -175,7 +175,7 @@
 			},
 			//编辑确认
 			confirmEdit () {
-				if (!!this.edit_item.name) {
+				if (!this.edit_item.name) {
 					this.utils.msg('请输入分类名称')
 					return;
 				}
@@ -188,7 +188,7 @@
 					this.$message({
 						showIcon : true,
 						type : 'success',
-						message : '添加成功'
+						message : '编辑成功'
 					})
 					this.reset();
 					this.initData();
