@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 const path = require('path');
-
+const Timestamp = new Date().getTime();
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
@@ -30,5 +30,12 @@ module.exports = {
             .set('@u',resolve('src/utils'))
             .set('@v',resolve('src/views'))
             .set('@cfg',resolve('src/config'))
-    }
+    },
+	//配置一下webpack，解决打包后缓存问题
+	configureWebpack: {
+		output : {
+			filename : `js/[name].${process.env.VUE_APP_Version}.${Timestamp}.js`,
+			chunkFilename : `js/[name].${process.env.VUE_APP_Version}.${Timestamp}.js`
+		}
+	}
 }
