@@ -31,7 +31,10 @@
 			}
 		},
 		created  () {
-			this.getCode()
+			this.getCode();
+			//重置state中的数据
+			this.$store.commit('resetState');
+			this.$store.commit('initAdminInfo',null);
 		},
 		//mounted () {},
 		methods : {

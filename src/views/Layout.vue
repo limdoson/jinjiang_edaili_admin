@@ -12,6 +12,7 @@
 			  	</span>
 			  	<el-dropdown-menu slot="dropdown">
 				    <el-dropdown-item command="resetPwd" >修改密码</el-dropdown-item>
+					<el-dropdown-item command="resetRechargePwd" v-if='$store.state.admin_info.id == 1'>修改交易密码</el-dropdown-item>
 				    <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
 			  	</el-dropdown-menu>
 			</el-dropdown>
@@ -46,6 +47,9 @@
 				switch (command){
 					case 'resetPwd'://重置密码
 						this.$router.push('/reset-pwd')
+						break;
+					case 'resetRechargePwd'://修改交易密码
+						this.$router.push('/index/recharge-pwd')
 						break;
 					case 'logout'://退出登录
 						this.logout()

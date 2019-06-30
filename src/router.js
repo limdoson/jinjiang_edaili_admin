@@ -26,7 +26,10 @@ let router = new Router({
 						auth_test : true
 					},
                     component : () => import('./views/Home')
-                },{//基础设置
+                },{//设置货款充值密码
+					path : 'recharge-pwd',
+					component : () => import('./views/setting/RechargePwd'),
+				},{//基础设置
                     path : 'basic-setting',
                     component : () => import('./views/setting/BasicSetting'),
                 },{//分销及代理设置

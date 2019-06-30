@@ -59,7 +59,7 @@
 				<template slot-scope="scope">
 					<el-button type='text' size='small' @click="$router.push('member-detail/'+scope.row.id)">详情</el-button>
 					<el-button type='text' size='small' @click="$router.push('member-team/'+scope.row.id)" v-if='scope.row.type == 2'>团队成员</el-button>
-					<el-button type="text" size="small" @click='recharge'>账户充值</el-button>
+					<el-button type="text" size="small" @click='recharge(scope.row)'>账户充值</el-button>
 					<el-button type="text" size="small" @click='changeUserType(scope.row,1)' v-if='scope.row.type == 2'>转为普通用户</el-button>
 					<el-button type="text" size="small" @click='changeUserType(scope.row,2)' v-if='scope.row.type == 1'>转为分销商</el-button>
 					<!-- <el-button type='text' size='small' @click='deleteItem(scope.row)'>删除</el-button> -->
@@ -84,7 +84,7 @@
 			:close-on-press-escape='false'
 			:close-on-click-modal='false'
 			:show-close='false'>
-			<el-input v-model="password" placeholder="请输入操作安全码"></el-input>
+			<el-input v-model="password" placeholder="请输入交易密码"></el-input>
 			<div slot='footer'>
 				<el-button size='small' type="default" @click='show_pwd_dialog = false'>取 消</el-button>
 				<el-button size='small' type="primary" @click='curfirmPwd'>确认</el-button>
@@ -122,8 +122,8 @@
 				show_pwd_dialog : false,//显示输入密码dialog
 				show_recharge_dialog : false,//显示重置dialog
 				password : null,//操作安全码
-				is_pwd : false,//安全码是否正确
 				money : null,//充值金额
+				user_tmp : null,//用来处理充值时，临时存储操作用户数据对象
 			}
 			
 		},
@@ -144,7 +144,7 @@
 				}).then(res => {
 					this.list = res.data.data;
 					this.total = res.data.total;
-					console.log(res.data)
+					
 				})
 			},
 			//搜索用户
@@ -173,14 +173,10 @@
 				})
 			},
 			//账户充值
-			recharge () {
+			recharge (item) {
+				this.user_tmp = item;
 				//判断是否已输入密码
-				if (!this.password) {
-					this.show_pwd_dialog = true;
-					return;
-				}
-				//判断验证码是否正确
-				if (!this.is_pwd) {
+				if (!this.$store.state.transaction_pwd) {
 					this.show_pwd_dialog = true;
 					return;
 				}
@@ -192,10 +188,13 @@
 					this.utils.msg('请输入安全码');
 					return;
 				}
-				//验证安全码是否正确
-				this.is_pwd = true;
-				this.show_pwd_dialog = false;
-				this.show_recharge_dialog = true;
+				this.http.post('/v1/a_super/checkSuper',{
+					super : this.password
+				}).then(res => {
+					this.$store.commit('changeTratPwd', true);
+					this.show_pwd_dialog = false;
+					this.show_recharge_dialog = true;
+				})
 			},
 			//充值
 			curfirmRecharge () {
@@ -203,6 +202,16 @@
 					this.utils.msg('请输入充值金额');
 					return;
 				}
+				this.http.post('/v1/a_user/recharge',{
+					id : this.user_tmp.id,
+					money : this.money
+				}).then(res => {
+					this.utils.msg('充值成功');
+					this.show_pwd_dialog = false;
+					this.show_recharge_dialog = false;
+					this.money = null;
+					this.initData();
+				})
 			},
 			//数据导出
 			dataExport () {

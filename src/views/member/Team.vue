@@ -59,7 +59,7 @@
 			<el-table-column prop='add_time' label='加入时间' width="180"></el-table-column>
 			<el-table-column fixed='right' label='操作' width='280px' >
 				<template slot-scope="scope">
-					<el-button type='text' size='small' @click="$router.push('member-detail/'+scope.row.id)">详情</el-button>
+					<el-button type='text' size='small' @click="$router.push('/index/member-detail/'+scope.row.id)">详情</el-button>
 					<el-button type='text' size='small' @click="getNextTeam(scope.row)" v-if='scope.row.type == 2'>团队成员</el-button>
 					<el-button type="text" size="small" @click='recharge'>账户充值</el-button>
 					<el-button type="text" size="small" @click='changeUserType(scope.row,1)' v-if='scope.row.type == 2'>转为普通用户</el-button>

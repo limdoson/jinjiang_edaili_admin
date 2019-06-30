@@ -28,11 +28,14 @@
 			<el-table-column prop='level_name' label='代理等级'></el-table-column>
 			<el-table-column prop='discount' label='拿货价折扣'></el-table-column>
 			<el-table-column prop='purchase_amount' label='累计进货额'></el-table-column>
+			<el-table-column prop='purchase_money' label='货款余额'></el-table-column>
+			
 			<el-table-column prop='recommend' label="推荐人"></el-table-column>
 			<el-table-column fixed='right' label='操作' width='200'>
 				<template slot-scope="scope">
 					<el-button type="text" size="small" @click="$router.push('agent-detail/'+scope.row.id)">详情</el-button>
-					<el-button type="text" size="small" @click="$router.push('agent-purchase-record')">进货记录</el-button>
+					<el-button type="text" size="small" @click='recharge(scope.row)'>账户充值</el-button>
+					<!-- <el-button type="text" size="small" @click="$router.push('agent-purchase-record')">进货记录</el-button> -->
 				</template>
 			</el-table-column>
 		</el-table>
@@ -59,6 +62,34 @@
 				<el-button size='small' type="primary" @click='curfirmReject'>确认</el-button>
 			</div>
 		</el-dialog>
+		<!-- 账户充值密码输入Dialog -->
+		<el-dialog 
+			title='安全码验证'
+			:visible.sync="show_pwd_dialog"
+			append-to-body
+			:close-on-press-escape='false'
+			:close-on-click-modal='false'
+			:show-close='false'>
+			<el-input v-model="password" placeholder="请输入交易密码"></el-input>
+			<div slot='footer'>
+				<el-button size='small' type="default" @click='show_pwd_dialog = false'>取 消</el-button>
+				<el-button size='small' type="primary" @click='curfirmPwd'>确认</el-button>
+			</div>
+		</el-dialog>
+		<!-- 账户充值dialog -->
+		<el-dialog 
+			title='账户充值'
+			:visible.sync="show_recharge_dialog"
+			append-to-body
+			:close-on-press-escape='false'
+			:close-on-click-modal='false'
+			:show-close='false'>
+			<el-input v-model="money" placeholder="请输入充值金额"></el-input>
+			<div slot='footer'>
+				<el-button size='small' type="default" @click='show_recharge_dialog = false'>取 消</el-button>
+				<el-button size='small' type="primary" @click='curfirmRecharge'>确认</el-button>
+			</div>
+		</el-dialog>
 	</div>
 </template>
 
@@ -73,6 +104,11 @@
 				show_reason_dialog : false,
 				reason_for_reject : null,//驳回原因
 				tmp_item : null,//用来存储操作过程中的中间变量
+				show_pwd_dialog : false,//显示输入密码dialog
+				show_recharge_dialog : false,//显示重置dialog
+				password : null,//操作安全码
+				money : null,//充值金额
+				user_tmp : null,//用来处理充值时，临时存储操作用户数据对象
 			}
 		},
 		created () {
@@ -118,7 +154,48 @@
 			resetData () {
 				this.show_reason_dialog = false;
 				this.reason_for_reject = null;
-			}
+			},
+			//账户充值
+			recharge (item) {
+				this.user_tmp = item;
+				//判断是否已输入密码
+				if (!this.$store.state.transaction_pwd) {
+					this.show_pwd_dialog = true;
+					return;
+				}
+				//验证码正确，显示重置dialog
+				this.show_recharge_dialog = true;
+			},
+			curfirmPwd () {
+				if (!this.password) {
+					this.utils.msg('请输入安全码');
+					return;
+				}
+				this.http.post('/v1/a_super/checkSuper',{
+					super : this.password
+				}).then(res => {
+					this.$store.commit('changeTratPwd', true);
+					this.show_pwd_dialog = false;
+					this.show_recharge_dialog = true;
+				})
+			},
+			//充值
+			curfirmRecharge () {
+				if (!this.money) {
+					this.utils.msg('请输入充值金额');
+					return;
+				}
+				this.http.post('/v1/a_agent/recharge',{
+					id : this.user_tmp.id,
+					money : this.money
+				}).then(res => {
+					this.utils.msg('充值成功');
+					this.show_pwd_dialog = false;
+					this.show_recharge_dialog = false;
+					this.money = null;
+					this.initData();
+				})
+			},
 		},
 		//mounted () {},
 		// watch () {
