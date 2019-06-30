@@ -127,10 +127,6 @@ let menu = [
 				id : '3-3',
 				name : '待审核分销商',
 				path : '/index/member-unaudited'
-			},{
-				id : '3-2',
-				name : '数据导出',
-				path : '/index/member-export'
 			}
         ]
     },{
@@ -206,6 +202,20 @@ let menu = [
             }
         ]
     },{
+		title : '提现管理',
+		index : '13',
+		sub_menu : [
+		    {
+		        id : '13-1',
+		        name : '提现申请',
+		        path : '/index/cash-apply'
+		    },{
+		        id : '13-2',
+		        name : '提现设置',
+		        path : '/index/cash-setting'
+		    }
+		]
+	},{
 		title : '优惠券管理',
 		index : '6',
 		sub_menu : [

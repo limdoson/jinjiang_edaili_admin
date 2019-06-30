@@ -7,7 +7,7 @@
 			<el-step title="其他相关设置" icon="el-icon-edit"></el-step>
 		</el-steps>
 		<!-- 商品基本信息 -->
-		<div v-show='active == 0 && cls_option' class="product-info form-container">
+		<div v-show='active == 0 ' class="product-info form-container">
 			<el-form label-width="180px" >
 				<el-form-item label="商品名称">
 					<el-input placeholder="请输入商品名称" v-model="name" :disabled='input_disabled'></el-input>
@@ -54,7 +54,7 @@
 					<!-- <pics-upload v-model='img'></pics-upload> -->
 				</el-form-item>
 				<el-form-item label="商品详情"  style='line-height: 30px;'>
-					<div v-html="content"></div>
+					<div v-html="content" class="content"></div>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -62,7 +62,7 @@
 		<div v-show='active == 2' class="product-info form-container">
 			<el-form label-width="180px">
 				<!-- 选择商品属性、规格 -->
-				<el-form-item label='已选商品属性/规格组'>
+				<!-- <el-form-item label='已选商品属性/规格组'>
 					<el-checkbox-group size='small' v-model='product_property_group' >
 						<el-checkbox-button  
 							v-for="(item,index) in attr_group" 
@@ -82,8 +82,8 @@
 							</li>
 						</ul>
 					</div>
-					<!-- <el-button type="danger" size="small" @click='changeChosedAttr' v-if='attribute_disabled'>重新选择商品属性/规格组</el-button> -->
-				</el-form-item>
+					<el-button type="danger" size="small" @click='changeChosedAttr' v-if='attribute_disabled'>重新选择商品属性/规格组</el-button>
+				</el-form-item> -->
 				<!-- 填写商品属性规格相关信息 -->
 				<el-form-item label='填写对应规格/属性信息' v-if='attr_table_data && attr_table_data.length'>
 					<el-table
@@ -117,7 +117,7 @@
 				</el-form-item>
 			</el-form>
 		</div>
-		<div class="text-center padding">
+		<div class="text-center padding steps">
 		
 			<el-button type="info" size="small" icon='el-icon-back' @click='$router.back()'>返回</el-button>
 			<el-button type="danger" size="small" @click='preStep' v-if='active > 0 '>上一步</el-button>
@@ -133,7 +133,7 @@
 		components: {editor},
 		data () {
 			return {
-				active : 0,//默认激活选项卡
+				active : 2,//默认激活选项卡
 				product_property_group : [],//已选规格属性组
 				attr_table_data : [],//生成表单的数据
 				t_id : [],//商品分类ID
@@ -166,22 +166,33 @@
 			},
 			initData(){
 				//获取初始需要数据
-				this.http.post('/v1/f_goods/goodsGetUpd',{
+				this.http.post('/v1/a_goods/getGoodsOne',{
 					id : this.$route.params.id
 				}).then(res => {
-					this.attr_group = res.data.attribute;//已选属性
-					this.cls_option = res.data.type;//商品类型
-					this.t_id = JSON.parse(res.data.goods.t_id_json);
-					this.name = res.data.goods.name;
-					this.supply_price = res.data.goods.supply_price;
-					this.stock = res.data.goods.stock;
-					this.unit = res.data.goods.unit;
-					this.sku = res.data.goods.sku;
-					this.fake_sale = res.data.goods.fake_sale;
-					this.cover = res.data.goods.cover;
-					this.img = res.data.goods.img;
-					this.content = res.data.goods.content;
-					this.attr_table_data = res.data.goods.attribute;
+					console.log(res)
+					this.name = res.data.name;
+					this.supply_price = res.data.supply_price;
+					this.unit = res.data.unit;
+					this.sku = res.data.sku;
+					this.stock = res.data.stock;
+					this.fake_sale = res.data.fake_sale;
+					this.cover = res.data.cover;
+					this.img = res.data.img;
+					this.content = res.data.content;
+					this.attr_table_data = res.data.attribute;
+					// this.attr_group = res.data.attribute;//已选属性
+					// this.cls_option = res.data.type;//商品类型
+					// this.t_id = JSON.parse(res.data.t_id_json);
+					// 
+					// this.supply_price = res.data.goods.supply_price;
+					// this.stock = res.data.goods.stock;
+					// this.unit = res.data.goods.unit;
+					// this.sku = res.data.goods.sku;
+					// this.fake_sale = res.data.goods.fake_sale;
+					// this.cover = res.data.goods.cover;
+					// this.img = res.data.goods.img;
+					// this.content = res.data.goods.content;
+					// this.attr_table_data = res.data.goods.attribute;
 					
 				}) 
 			},
@@ -277,3 +288,10 @@
 		}
 	}
 </script>
+<style lang="less">
+	.content {
+		img {
+			max-width: 300px;
+		}
+	}
+</style>

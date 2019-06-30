@@ -178,6 +178,12 @@ let router = new Router({
 				},{//优惠券使用记录
 					path : 'coupon-record',
 					component : () => import('./views/activity/CouponRecord'),
+				},{//提现申请
+					path : 'cash-apply',
+					component : () => import('./views/cash-apply/Index'),
+				},{//提现设置
+					path : 'cash-setting',
+					component : () => import('./views/cash-apply/Setting'),
 				}
             ]
         },{

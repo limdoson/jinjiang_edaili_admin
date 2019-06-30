@@ -16,6 +16,7 @@
 			<el-col :span='2'>
 				<el-button type='primary' size="small" icon="el-icon-search" @click='search'>搜索</el-button>
 			</el-col>
+			
 		</el-row>
 		<!--  -->
 		<el-row :gutter="10" class='search-header' style='padding-top: 10px;'>
@@ -67,7 +68,7 @@
 		</el-table>
 		<!-- 底部分页 -->
 		<div class="pagination s-b">
-			<span></span>
+			<el-button type='primary' size="small"  @click='dataExport'>数据导出</el-button>
 			<el-pagination
 				background
 				@current-change='currentChange'
@@ -202,6 +203,11 @@
 					this.utils.msg('请输入充值金额');
 					return;
 				}
+			},
+			//数据导出
+			dataExport () {
+				window.open(`${this._config.base_request_host}/v1/a_user/export`)
+				
 			}
 		},
 		//mounted () {},
