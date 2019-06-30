@@ -58,10 +58,10 @@
 			</el-col>
 			<el-col :span='12'>
 				<div class="pagination s-b" style="padding: 0;">
-					<span></span>
+					<span></span> 
 					<el-pagination
 					  background
-					  @currnet-change='currentChange'
+					  @current-change='currentChange'
 					  layout="prev, pager, next"
 					  :total="total">
 					</el-pagination>
