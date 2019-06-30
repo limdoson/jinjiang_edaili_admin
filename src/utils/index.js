@@ -13,7 +13,7 @@ class Utils extends Vue {
         if (!msg) {
            throw new Error('utils类中msg方法缺省必要参数msg')
         }
-		this.$alert(msg, '标题名称', {
+		this.$alert(msg, '提示', {
 			confirmButtonText: '确定',
 			callback: action => {
 				cb && cb();
