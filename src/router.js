@@ -118,6 +118,9 @@ let router = new Router({
 				},{//待审核分销商
 					path : 'member-unaudited',
 					component : () => import('./views/member/UnauditedMember'),
+				},{//分销商提现申请
+					path : 'member-cash-apply',
+					component : () => import('./views/member/CashApply'),
 				},{//厂商列表
 					path : 'factory-list',
 					component : () => import('./views/factory/List'),
@@ -142,6 +145,9 @@ let router = new Router({
 				},{//代理进货记录
 					path : '/index/agent-purchase-record',
 					component : () => import('./views/agent/Purchase'),
+				},{//代理提现管理
+					path : '/index/agent-cash-apply',
+					component : () => import('./views/agent/CashApply'),
 				},{//订单数据
 					path : 'order',
 					component : () => import('./views/order/Index'),

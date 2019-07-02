@@ -42,11 +42,12 @@ let menu = [
                 id : '2-2',
                 name : '公众号菜单设置',
                 path : '/index/wx-menu'
-            },{
-				id : '2-3',
-				name : '分享设置',
-				path : '/index/wx-share-config'
-			}
+            },
+			// {
+			// 	id : '2-3',
+			// 	name : '分享设置',
+			// 	path : '/index/wx-share-config'
+			// }
         ]
     },{
 		title : '运费策略',
@@ -127,6 +128,10 @@ let menu = [
 				id : '3-3',
 				name : '待审核分销商',
 				path : '/index/member-unaudited'
+			},{
+				id : '3-4',
+				name : '分销商提现管理',
+				path : '/index/member-cash-apply'
 			}
         ]
     },{
@@ -155,6 +160,10 @@ let menu = [
 				id : '9-2',
 				name : '已审核代理',
 				path : '/index/agent-audited'
+			},{
+				id : '9-3',
+				name : '代理商提现管理',
+				path : '/index/agent-cash-apply'
 			}
 		]
 	},{
@@ -202,20 +211,6 @@ let menu = [
             }
         ]
     },{
-		title : '提现管理',
-		index : '13',
-		sub_menu : [
-		    {
-		        id : '13-1',
-		        name : '提现申请',
-		        path : '/index/cash-apply'
-		    },{
-		        id : '13-2',
-		        name : '提现设置',
-		        path : '/index/cash-setting'
-		    }
-		]
-	},{
 		title : '优惠券管理',
 		index : '6',
 		sub_menu : [

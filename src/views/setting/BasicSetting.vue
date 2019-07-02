@@ -1,7 +1,7 @@
 <template>
 	<div class="basic-setting">
 		<div class="form-container">
-			<el-form label-width="100px">
+			<el-form label-width="160px">
 				<el-form-item label='客服电话'>
 					<el-input v-model="service_tel" placeholder="请输入内容"></el-input>
 				</el-form-item>
@@ -21,6 +21,18 @@
 				</el-form-item>
 				<el-form-item label="订单关闭设置">
 					订单未支付时，<el-input class='mini-input' v-model="auto_close_time"></el-input>分钟后关闭
+				</el-form-item>
+				<el-form-item label="最小提现额">
+					<el-input class='mini-input'></el-input>元
+				</el-form-item>
+				<el-form-item label="最大提现额">
+					<el-input  class='mini-input'></el-input>元
+				</el-form-item>
+				<el-form-item label="手续费(百分比)">
+					<el-input  class='mini-input'></el-input>%
+				</el-form-item>
+				<el-form-item label="账期">
+					<el-input  class='mini-input'></el-input>天
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="save" size='small' icon='el-icon-upload2'>保存设置</el-button>
