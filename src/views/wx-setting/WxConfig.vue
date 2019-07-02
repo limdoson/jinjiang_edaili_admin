@@ -24,15 +24,22 @@
 					<up-load v-model='qrcode'></up-load>
 				</el-form-item>
 				<el-form-item label='公钥证书'>
+					<p v-if='public_key'>文件路径：{{public_key}}</p>
+					
 					<el-upload
-						action="https://jsonplaceholder.typicode.com/posts/"
+						:action="`${_config.base_request_host}/v1/uploadFile`"
+						:on-success='uploadPublicSuccess'
+						:on-remove='removePublic'
 						:limit='1'>
 						<el-button size='small' type='primary' icon='el-icon-upload'>点击上传</el-button>
 					</el-upload>
 				</el-form-item>
 				<el-form-item label='私钥证书'>
+					<p v-if='privare_key'>文件路径：{{privare_key}}</p>
 					<el-upload
-						action="https://jsonplaceholder.typicode.com/posts/"
+						:action="`${_config.base_request_host}/v1/uploadFile`"
+						:on-success='uploadPrivareSuccess'
+						:on-remove='removePrivare'
 						:limit='1'>
 						<el-button size='small' type='primary' icon='el-icon-upload'>点击上传</el-button>
 					</el-upload>
@@ -73,7 +80,6 @@
 				this.qrcode = res.data.qrcode;
 				this.public_key = res.data.public_key;
 				this.privare_key = res.data.privare_key
-				console.log(res)
 			})
 		},
 		//mounted () {},
@@ -92,6 +98,18 @@
 				}).then(res => {
 					this.utils.msg('设置成功');
 				})
+			},
+			uploadPublicSuccess (res) {
+				this.public_key = res.data;
+			},
+			uploadPrivareSuccess (res) {
+				this.privare_key = res.data;
+			},
+			removePublic () {
+				this.public_key = null;
+			},
+			removePrivare () {
+				this.privare_key = null;
 			}
 		}
 	}
