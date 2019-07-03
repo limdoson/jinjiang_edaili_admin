@@ -6,19 +6,19 @@
 			</div>
 			<ul class="finance-data s-b">
 				<li>
-					<p>1</p>
+					<p>{{account.saleMoney}}</p>
 					<h1>销售额</h1>
 				</li>
 				<li>
-					<p>1</p>
+					<p>{{account.disMoney}}</p>
 					<h1>产生分销佣金</h1>
 				</li>
 				<li>
-					<p>1</p>
+					<p>{{account.agentMoney}}</p>
 					<h1>产生代理收益</h1>
 				</li>
 				<li>
-					<p>1</p>
+					<p>{{account.profitMoney}}</p>
 					<h1>平台收益</h1>
 				</li>
 			</ul>
@@ -29,19 +29,19 @@
 			</div>
 			<ul class="finance-data s-b">
 				<li>
-					<p>1</p>
+					<p>{{user.agentNum}}</p>
 					<h1>新增代理</h1>
 				</li>
 				<li>
-					<p>1</p>
+					<p>{{user.disNum}}</p>
 					<h1>新增分销商</h1>
 				</li>
 				<li>
-					<p>1</p>
+					<p>{{user.factoryNum}}</p>
 					<h1>新增供应商</h1>
 				</li>
 				<li>
-					<p>12</p>
+					<p>{{user.user}}</p>
 					<h1>新增用户(含分销商)</h1>
 				</li>
 			</ul>
@@ -52,19 +52,19 @@
 			</div>
 			<ul class="finance-data s-b">
 				<li>
-					<p>1</p>
+					<p>{{order.all}}</p>
 					<h1>总订单</h1>
 				</li>
 				<li>
-					<p>1</p>
+					<p>{{order.waitPay}}</p>
 					<h1>待付款订单</h1>
 				</li>
 				<li>
-					<p>1</p>
+					<p>{{order.waitSend}}</p>
 					<h1>待发货订单</h1>
 				</li>
 				<li>
-					<p>12</p>
+					<p>{{order.waitGet}}</p>
 					<h1>待收货订单</h1>
 				</li>
 			</ul>
@@ -93,15 +93,25 @@
 		components : {},
 		data () {
 			return {
-				
+				account :null,
+				order :null,
+				user :null
 			}
 		},
 		created  () {
-			
+			this.initData();
 		},
 		//mounted () {},
 		methods : {
-			
+			initData () {
+				this.http.post('/v1/a_index/getIndex',{
+					
+				}).then(res => {
+					this.account = res.data.account;
+					this.order = res.data.order;
+					this.user = res.data.user;
+				})
+			}
 		}
 	}
 </script>
