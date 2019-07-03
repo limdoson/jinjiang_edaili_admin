@@ -69,7 +69,7 @@
 				</li>
 			</ul>
 		</el-card>
-		<el-card class="box-card">
+		<!-- <el-card class="box-card">
 			<div slot="header" class="clearfix">
 				<h1>待办事项</h1>
 			</div>
@@ -85,7 +85,7 @@
 			<ul class="wait-to-do">
 				<li><span class="red">2018-05-08</span>，平台管理员：<span class="red">林杜森</span>与<span class="red">xxx工厂</span>进行货款结算，金额：<span class="red">￥100.00</span>。</li>
 			</ul>
-		</el-card>
+		</el-card> -->
 	</div>
 </template>
 <script>
