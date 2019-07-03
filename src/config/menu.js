@@ -185,30 +185,27 @@ let menu = [
         index : '5',
         sub_menu : [
             {
-                id : '5-1',
-                name : '交易流水数据',
-                path : '/index/trade-data'
-            },{
-				id : '5-6',
-				name : '供应商货款记录',
-				path : '/index/supplier-data'
+				id : '5-8',
+				name : '用户相关财务',
+				path : '/index/finance/user'
 			},{
-				id : '5-3',
-				name : '代理缴费记录',
-				path : '/index/agent-payment-data'
+				id : '5-9',
+				name : '代理相关财务',
+				path : '/index/finance/agent'
 			},{
-				id : '5-4',
-				name : '代理收益记录',
-				path : '/index/agent-profit-data'
+				id : '5-10',
+				name : '供应商相关财务',
+				path : '/index/finance/factory'
 			},{
-				id : '5-5',
-				name : '分销流水记录',
-				path : '/index/fx-data'
-			},{
-                id : '5-2',
-                name : '导出财务数据',
-                path : '/index/finance-data-export'
-            }
+				id : '5-11',
+				name : '平台流水',
+				path : '/index/finance/platform'
+			}
+			// {
+   //              id : '5-2',
+   //              name : '导出财务数据',
+   //              path : '/index/finance-data-export'
+   //          }
         ]
     },{
 		title : '优惠券管理',

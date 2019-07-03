@@ -23,16 +23,16 @@
 					订单未支付时，<el-input class='mini-input' v-model="auto_close_time"></el-input>分钟后关闭
 				</el-form-item>
 				<el-form-item label="最小提现额">
-					<el-input class='mini-input'></el-input>元
+					<el-input class='mini-input' v-model="min_cash"></el-input>元
 				</el-form-item>
 				<el-form-item label="最大提现额">
-					<el-input  class='mini-input'></el-input>元
+					<el-input  class='mini-input' v-model="max_cash"></el-input>元
 				</el-form-item>
 				<el-form-item label="手续费(百分比)">
-					<el-input  class='mini-input'></el-input>%
+					<el-input  class='mini-input' v-model="cash_fee"></el-input>%
 				</el-form-item>
 				<el-form-item label="账期">
-					<el-input  class='mini-input'></el-input>天
+					<el-input  class='mini-input' v-model="cash_day"></el-input>天
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="save" size='small' icon='el-icon-upload2'>保存设置</el-button>
@@ -52,7 +52,10 @@
 				default_avatar : null,//用户默认头像
 				auto_collect_time : null,//自动收货时间
 				auto_close_time : null,//支付超时时间
-				
+				min_cash :null,
+				max_cash : null,
+				cash_fee :null,
+				cash_day : null,
 			}
 		},
 		created  () {
@@ -71,6 +74,10 @@
 					this.default_avatar = res.data.default_avatar;
 					this.auto_collect_time = res.data.auto_collect_time;
 					this.auto_close_time = res.data.auto_close_time;
+					this.min_cash = res.data.min_cash;
+					this.max_cash = res.data.max_cash;
+					this.cash_fee = res.data.cash_fee;
+					this.cash_day = res.data.cash_day
 				})
 			},
 			save () {
@@ -80,7 +87,11 @@
 					sensitive : this.sensitive,
 					default_avatar : this.default_avatar,
 					auto_collect_time : this.auto_collect_time,
-					auto_close_time : this.auto_close_time
+					auto_close_time : this.auto_close_time,
+					min_cash : this.min_cash,
+					max_cash : this.max_cash,
+					cash_fee : this.cash_fee,
+					cash_day : this.cash_day
 				}).then(res => {
 					this.utils.msg(res.msg)
 				})

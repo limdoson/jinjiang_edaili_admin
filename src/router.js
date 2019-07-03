@@ -146,7 +146,7 @@ let router = new Router({
 					path : '/index/agent-purchase-record',
 					component : () => import('./views/agent/Purchase'),
 				},{//代理提现管理
-					path : '/index/agent-cash-apply',
+					path : 'agent-cash-apply',
 					component : () => import('./views/agent/CashApply'),
 				},{//订单数据
 					path : 'order',
@@ -157,24 +157,6 @@ let router = new Router({
 				},{//订单详情
 					path : 'order-detail/:id?',
 					component : () => import('./views/order/Detail'),
-				},{//交易流水
-					path : 'trade-data',
-					component : () => import('./views/finance/TradeData'),
-				},{
-					path : 'supplier-data',
-					component : () => import('./views/finance/SupplierData'),
-				},{//代理缴费记录
-					path : 'agent-payment-data',
-					component : () => import('./views/finance/AgentPaymentData'),
-				},{//代理收益记忆
-					path : 'agent-profit-data',
-					component : () => import('./views/finance/AgentProfitData'),
-				},{//分销记录
-					path : 'fx-data',
-					component : () => import('./views/finance/FxData'),
-				},{//U币流水
-					path : 'coin-data',
-					component : () => import('./views/finance/CoinData'),
 				},{//财务记录导出
 					path : 'finance-data-export',
 					component : () => import('./views/finance/FinanceDataExport'),
@@ -193,6 +175,18 @@ let router = new Router({
 				},{//提现设置
 					path : 'cash-setting',
 					component : () => import('./views/cash-apply/Setting'),
+				},{//用户财务记录
+					path : 'finance/user',
+					component : () => import('./views/finance/User'),
+				},{//代理相关财务
+					path : 'finance/agent',
+					component : () => import('./views/finance/Agent'),
+				},{//供货商财务
+					path : 'finance/factory',
+					component : () => import('./views/finance/Factory'),
+				},{//平台财务
+					path : 'finance/platform',
+					component : () => import('./views/finance/Platform'),
 				}
             ]
         },{
