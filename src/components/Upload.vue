@@ -50,6 +50,7 @@
 			uploadSuccess (res,file) {
 				this.loading.close();
 				this.$emit('input',res.data)
+				this.$emit('change')
 			},
 			// 上传失败回调
 			uploadError () {

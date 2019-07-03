@@ -6,7 +6,7 @@
 					<span class="red">请确保所有轮播图尺寸一致。</span>
 				</el-form-item>
 				<el-form-item label="轮播图链接">
-					<el-input v-model="link" placeholder="请输入橱窗名称"></el-input>
+					<el-input v-model="link" placeholder="请输入轮播图链接"></el-input>
 				</el-form-item>
 				<el-form-item label="图片上传">
 					<up-load v-model='img'></up-load>
@@ -35,6 +35,14 @@
 					this.utils.msg('轮播图链接及图片都必填');
 					return;
 				}
+				this.http.post('/v1/a_shopIndex/addFlash',{
+					img : this.img,
+					url : this.link,
+				}).then(res => {
+					this.utils.msg(res.msg);
+					this.img = null;
+					this.link = null;
+				})
 			}
 		}
 	}

@@ -78,7 +78,7 @@ let router = new Router({
 					path : 'window-demo',
 					component : () => import('./views/window/Demo'),
 				},{//广告橱窗添加
-					path : 'window-add',
+					path : 'window-add/:id?',
 					component : () => import('./views/window/Add'),
 				},{//在售商品
 					path : 'product-insale',

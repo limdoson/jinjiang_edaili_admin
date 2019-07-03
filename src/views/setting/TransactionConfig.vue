@@ -12,16 +12,16 @@
 				<el-form-item label="分销申请条件">
 					<el-checkbox-group v-model="fx_update_config" @change='change'>
 						<el-checkbox label="1" >免费申请</el-checkbox>
-						<el-checkbox label='2'>消费满额</el-checkbox>
-						<el-checkbox label="3">充值满额</el-checkbox>
+						<!-- <el-checkbox label='2'>消费满额</el-checkbox>
+						<el-checkbox label="3">充值满额</el-checkbox> -->
 					</el-checkbox-group>
 				</el-form-item>
-				<el-form-item label="升级分销所需消费额度" v-if='need_pay'>
+				<!-- <el-form-item label="升级分销所需消费额度" v-if='need_pay'>
 					<el-input v-model="d_pay_money"></el-input>
 				</el-form-item>
 				<el-form-item label="升级分销所需充值额度" v-if='need_recharge'>
 					<el-input v-model="d_recharge_money"></el-input>
-				</el-form-item>
+				</el-form-item> -->
 				<el-form-item label='分销等级设置'>
 					<el-input readonly v-model='d_level' style='width: 120px;'></el-input>
 					<el-button type="primary" size="small" style='margin-left: 10px;' @click='addFxLevel()'>添加</el-button>
