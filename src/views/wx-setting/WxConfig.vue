@@ -35,7 +35,7 @@
 					</el-upload>
 				</el-form-item>
 				<el-form-item label='私钥证书'>
-					<p v-if='privare_key'>文件路径：{{privare_key}}</p>
+					<p v-if='private_key'>文件路径：{{private_key}}</p>
 					<el-upload
 						:action="`${_config.base_request_host}/v1/uploadFile`"
 						:on-success='uploadPrivareSuccess'
@@ -64,7 +64,7 @@
 				api_key : null,//微信支付秘钥
 				qrcode :null,//公众号二维码
 				public_key :null,//微信支付公钥
-				privare_key :null,//微信支付私钥
+				private_key :null,//微信支付私钥
 			}
 		},
 		created  () {
@@ -79,7 +79,7 @@
 				this.api_key = res.data.api_key;
 				this.qrcode = res.data.qrcode;
 				this.public_key = res.data.public_key;
-				this.privare_key = res.data.privare_key
+				this.private_key = res.data.private_key
 			})
 		},
 		//mounted () {},
@@ -93,8 +93,8 @@
 					mchid : this.mchid,
 					api_key : this.api_key,
 					qrcode : this.qrcode,
-					public_key : this.privare_key,
-					privare_key : this.privare_key
+					public_key : this.public_key,
+					private_key : this.private_key
 				}).then(res => {
 					this.utils.msg('设置成功');
 				})
@@ -103,7 +103,7 @@
 				this.public_key = res.data;
 			},
 			uploadPrivareSuccess (res) {
-				this.privare_key = res.data;
+				this.private_key = res.data;
 			},
 			removePublic () {
 				this.public_key = null;
