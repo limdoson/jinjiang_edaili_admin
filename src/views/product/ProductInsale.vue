@@ -68,6 +68,7 @@
 			<el-button type="danger" size="small" :disabled="disabled" @click='offShelfSome'>批量下架</el-button>
 			<el-pagination
 			  background
+			  @current-change='currentChange'
 			  layout="prev, pager, next"
 			  :total="total">
 			</el-pagination>
@@ -108,9 +109,13 @@
 					startTime : this.time ? this.time[0] : null,
 					endTime : this.time ? this.time[0] : null,
 				}).then(res => {
-					console.log(res)
+					this.total = res.data.total;
 					this.list = res.data.data;
 				})
+			},
+			currentChange (page) {
+				this.page = page;
+				this.initData();
 			},
 			//商品搜索
 			search () {

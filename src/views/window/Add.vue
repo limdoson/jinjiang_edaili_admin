@@ -86,7 +86,7 @@
 				<span></span>
 				<el-pagination
 				  background
-				  :current-change='currentChange'
+				  @current-change='currentChange'
 				  layout="prev, pager, next"
 				  :total="total">
 				</el-pagination>
@@ -189,11 +189,12 @@
 				}
 				if(this.$route.params.id) {
 					this.http.post('/v1/a_shopIndex/updWindow',{
+						id : this.$route.params.id,
 						name : this.window_title,
 						type : this.window_type,
 						goods_id : this.selected_products_ids
 					}).then(res => {
-						utils.msg(res.data);
+						this.utils.msg(res.msg);
 					})
 				} else {
 					this.http.post('/v1/a_shopIndex/addWindow',{
@@ -201,7 +202,7 @@
 						type : this.window_type,
 						goods_id : this.selected_products_ids
 					}).then(res => {
-						utils.msg(res.data);
+						this.utils.msg(res.msg);
 					})
 				}
 				

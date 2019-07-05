@@ -36,7 +36,7 @@
 			<el-table-column prop="" label="操作">
 				<template slot-scope='scope'>
 					<el-button type="text" size="small" @click="$router.push('/index/window-add/'+scope.row.id)">编辑</el-button>
-					<el-button type="text" size="small">删除</el-button>
+					<el-button type="text" size="small" @click='deleteItem(scope.row)'>删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -70,6 +70,14 @@
 					sort : item.sort
 				}).then(res => {
 					this.utils.msg(res.msg)
+				})
+			},
+			deleteItem(item) {
+				this.http.post('/v1/a_shopIndex/delWindow',{
+					id : item.id
+				}).then(res => {
+					this.utils.msg('删除成功');
+					this.initData();
 				})
 			}
 		},

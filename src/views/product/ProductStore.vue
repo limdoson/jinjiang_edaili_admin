@@ -107,6 +107,7 @@
 			<span></span>
 			<el-pagination
 			  background
+			  @current-change='currentChange'
 			  layout="prev, pager, next"
 			  :total="total">
 			</el-pagination>
@@ -186,6 +187,10 @@
 					this.list = res.data.data;
 					this.total = res.data.total;
 				})
+			},
+			currentChange (page) {
+				this.page = page;
+				this.initData();
 			},
 			//搜索
 			search () {
