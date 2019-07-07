@@ -5,7 +5,7 @@ import store from '@/store.js';
 
 let menu = [
     {
-        title : '系统设置',
+        name : '系统设置',
         index :'1',
         sub_menu : [
             {
@@ -17,21 +17,17 @@ let menu = [
                 name : '分销及代理设置',
                 path : '/index/transaction-config'
             },{
-			    id : '1-2',
-			    name : '权限管理',
-			    path : '/index/jdt'
-			},{
 			    id : '1-3',
 			    name : '角色管理',
 			    path : '/index/role'
 			},{
 			    id : '1-4',
-			    name : '管理员',
+			    name : '管理员列表',
 			    path : '/index/manager'
 			}
         ]
     },{
-        title : '微信设置',
+        name : '微信设置',
         index : '2',
         sub_menu : [
             {
@@ -50,7 +46,7 @@ let menu = [
 			// }
         ]
     },{
-		title : '运费策略',
+		name : '运费策略',
 		index : '11',
 		sub_menu : [
 			{
@@ -60,7 +56,7 @@ let menu = [
 			}
 		]
 	},{
-		title : '首页内容管理',
+		name : '首页内容管理',
 		index : '12',
 		sub_menu : [
 			{
@@ -78,7 +74,7 @@ let menu = [
 			}
 		]
 	},{
-		title : '商品管理',
+		name : '商品管理',
 		index : '7',
 		sub_menu : [
 			{
@@ -117,7 +113,7 @@ let menu = [
 			// }
 		]
 	},{
-        title : '用户管理',
+        name : '用户管理',
         index : '3',
         sub_menu : [
             {
@@ -135,7 +131,7 @@ let menu = [
 			}
         ]
     },{
-		title :'供应商管理',
+		name :'供应商管理',
 		index : '10',
 		sub_menu : [
 			{
@@ -149,7 +145,7 @@ let menu = [
 			},
 		]
 	},{
-		title : '代理管理',
+		name : '代理管理',
 		index : '9',
 		sub_menu : [
 			{
@@ -167,7 +163,7 @@ let menu = [
 			}
 		]
 	},{
-        title : '订单管理',
+        name : '订单管理',
         index : '4',
         sub_menu : [
             {
@@ -181,7 +177,7 @@ let menu = [
             }
         ]
     },{
-        title : '财务管理',
+        name : '财务管理',
         index : '5',
         sub_menu : [
             {
@@ -208,7 +204,7 @@ let menu = [
    //          }
         ]
     },{
-		title : '优惠券管理',
+		name : '优惠券管理',
 		index : '6',
 		sub_menu : [
 			{

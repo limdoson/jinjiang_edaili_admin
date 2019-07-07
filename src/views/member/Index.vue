@@ -37,7 +37,7 @@
 			stripe
 			ref="multipleTable">
 			<el-table-column prop='id' label='ID'></el-table-column>
-			
+			<el-table-column prop='nickname' label='昵称'></el-table-column>
 			<el-table-column prop='realname' label='真实姓名'></el-table-column>
 			<el-table-column prop='tel' label='电话' width="120"></el-table-column>
 			<el-table-column prop='user_identity' label="推荐人(ID)" width="140">

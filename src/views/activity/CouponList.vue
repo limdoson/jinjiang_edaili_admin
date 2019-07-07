@@ -23,21 +23,38 @@
 			stripe
 			ref="multipleTable">
 			<el-table-column prop='id' label='ID'></el-table-column>
-			<el-table-column prop='grant_admin' label='发放人员'></el-table-column>
-			<el-table-column prop='type' label='优惠券类别'></el-table-column>
-			<el-table-column prop='money' label='优惠券金额' width='180px'></el-table-column>
-			<el-table-column prop='target' label='发放目标'></el-table-column>
-			<el-table-column prop='grant_num' label='发放数量'></el-table-column>
-			<el-table-column prop='number_of_recipients' label='领取数量'></el-table-column>
-			<el-table-column prop='userd_num' label='使用数量'></el-table-column>
-			<el-table-column prop='exp_date' label='过期时间'></el-table-column>
-			<el-table-column width="180px">
-				<template slot-scope="scope">
-					<el-button type="text" size="small">删除优惠券</el-button>
-					<el-button type="text" size="small" @click="$router.push('coupon-record')">领用记录</el-button>
+			<el-table-column prop='title' label='优惠券名称'></el-table-column>
+			<el-table-column prop='admin_name' label='发放人员'></el-table-column>
+			<el-table-column prop='type' label='优惠券类别'>
+				<template slot-scope='scope'>
+					{{scope.row.model == 1 ? '全场通用优惠券 ' : '指定单品优惠券'}}
+				</template>
+			</el-table-column>
+			<el-table-column prop='money' label='优惠券金额' >
+				<template slot-scope='scope'>
+					<span v-if='scope.row.type == 1'>{{scope.row.money}}</span>
+					<span v-if='scope.row.type == 2'>满{{scope.row.order_money}}元减{{scope.row.reduce_money}}</span>
 					
 				</template>
 			</el-table-column>
+			<el-table-column prop='target' label='发放目标'>
+				<template slot-scope='scope'>
+					<span v-if='scope.row.to == 1'>领券中心</span>
+					<span v-if='scope.row.to == 2'>指定用户</span>
+					<span v-if='scope.row.to == 3'>所有用户</span>
+					
+				</template>
+			</el-table-column>
+			<el-table-column prop='number' label='发放数量'></el-table-column>
+			<el-table-column prop='collar_number' label='领取数量'></el-table-column>
+			<el-table-column prop='use_number' label='使用数量'></el-table-column>
+			<el-table-column prop='end_time' label='过期时间'></el-table-column>
+			<!-- <el-table-column width="180px">
+				<template slot-scope="scope">
+					<el-button type="text" size="small" @click="$router.push('coupon-record')">领用记录</el-button>
+					
+				</template>
+			</el-table-column> -->
 				
 			</el-table-column>
 		</el-table>
@@ -49,63 +66,30 @@
 		components: {},
 		data () {
 			return {
-				list : [
-					{
-						id :1,
-						cls : '全场商品通用优惠券',
-						type : '普通优惠券',
-						money : '优惠10元',
-						number_of_recipients : 100,//领取数量
-						userd_num : 80,
-						exp_date : '2018-05-05',
-						grant_admin : '超级管理员',
-						grant_num : '1000',
-						target : '领取中心'
-					},{
-						id :2,
-						cls : '全场商品通用优惠券',
-						type : '满减优惠券',
-						money : '满10元优惠券1元',
-						number_of_recipients : 100,//领取数量
-						userd_num : 80,
-						exp_date : '2018-05-05',
-						grant_admin : '林杜森',
-						grant_num : '50',
-						target : '领取中心'
-					},{
-						id :3,
-						cls : '指定商品优惠券',
-						type : '满减优惠券',
-						money : '满10元优惠券1元',
-						number_of_recipients : 90,//领取数量
-						userd_num : 80,
-						exp_date : '2018-05-05',
-						grant_admin : '林杜森',
-						grant_num : '50',
-						target : '指定用户'
-					},{
-						id :4,
-						cls : '指定商品优惠券',
-						type : '普通优惠券',
-						money : '优惠2元',
-						number_of_recipients : 90,//领取数量
-						userd_num : 80,
-						exp_date : '2018-05-05',
-						grant_admin : '林杜森',
-						grant_num : '2000',
-						target : '指定用户'
-					}
-				],
+				list : null,
+				limit : 10,
+				page : 1,
+				total : 1,
 				search_type : '1',
 				key_word : null,
 			}
 		},
 		created () {
-			
+			this.initData();
 		},
 		
 		methods : {
-			
+			initData () {
+				this.http.post('/v1/a_coupon/getCoupon',{
+					limit : this.limit,
+					page : this.page,
+					id : this.search_type == 1 ? this.key_word :null,
+					admin_name : this.search_type == 2 ? this.key_word : null
+				}).then(res => {
+					this.list = res.data.data;
+					this.total = res.data.total;
+				})
+			}
 		},
 		//mounted () {},
 		// watch () {

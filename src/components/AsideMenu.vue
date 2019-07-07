@@ -7,7 +7,7 @@
 		<el-submenu index='1' v-for='item,index in menu' :key='index' :index='item.index'>
 			<template slot='title'>
 				<i class="iconfont" style='margin-right: 10px;'>&#xe63e;</i>
-				<span>{{item.title}}</span>
+				<span>{{item.name}}</span>
 			</template>
 			<!--子菜单-->
 			<el-menu-item-group v-for='sub_menu_item in item.sub_menu' :key='sub_menu_item.id'>

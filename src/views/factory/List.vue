@@ -3,10 +3,10 @@
 		<el-row :gutter='10' class="search-header" type="flex">
 			<el-col :span='3'>
 				<el-select v-model="search_type" placeholder="请选择">
-					<el-option value='1' label='厂商ID'></el-option>
-					<el-option value='2' label='厂商名称'></el-option>
-					<el-option value='3' label='厂商联系人姓名'></el-option>
-					<el-option value='4' label='厂商联系人电话'></el-option>
+					<el-option value='id' label='厂商ID'></el-option>
+					<el-option value='name' label='厂商名称'></el-option>
+					<el-option value='realname' label='厂商联系人姓名'></el-option>
+					<el-option value='tel' label='厂商联系人电话'></el-option>
 			  	</el-select>
 			</el-col>
 			<el-col :span='4'>
@@ -27,7 +27,7 @@
 			header-row-class-name='bg-table-header'
 			:header-cell-style = "{backgroundColor: '#fafafa'}"
 			ref="multipleTable">
-			<!-- <el-table-column prop='id' label='厂商ID'></el-table-column> -->
+			<el-table-column prop='id' label='厂商ID'></el-table-column>
 			<el-table-column prop='name' label='厂商名称'></el-table-column>
 			<el-table-column prop='realname' label='厂商联系人姓名'></el-table-column>
 			<el-table-column prop='tel' label='手机号码'></el-table-column>
@@ -98,13 +98,14 @@
 				limit : 10,
 				page :1,
 				total  :1,
-				search_type : '1',
+				search_type : 'id',
 				key_word : null,
 				list : null,
 				show_dialog : false,
 				show_dialog_express : false,
 				settled_amount : null,//dialog中的结算金额
 				settled_amount_express : null,//dialog中的结算运费金额
+				item_tmp : null,//临时中间变量，用来存储结算时的供货商对象
 			}
 		},
 		created () {
@@ -115,14 +116,20 @@
 			initData(){
 				this.http.post('/v1/a_factory/getAll',{
 					limit : this.limit,
-					page : this.page
+					page : this.page,
+					id : this.search_type == 'id' ? this.key_word : null,
+					name : this.search_type == 'name' ? this.key_word : null,
+					realname : this.search_type == 'realname' ? this.key_word : null,
+					tel : this.search_type == 'tel' ? this.key_word : null,
 				}).then(res => {
 					console.log(res)
 					this.list = res.data.data;
 					this.total = res.total;
 				})
 			},
+			//显示结算货款dialog
 			showDialog (item) {
+				this.item_tmp = item;
 				this.show_dialog = true;
 			},
 			showDialogExpress (item) {
@@ -131,6 +138,7 @@
 			cancle () {
 				this.show_dialog = false;
 				this.settled_amount = null;
+				this.item_tmp = null;
 			},
 			curfirm () {
 				if (!this.settled_amount) {
@@ -141,6 +149,15 @@
 					this.utils.msg('结算金额必须大于0');
 					return;
 				}
+				
+				this.http.post('/v1/a_factory/settlementPurchase',{
+					factory_id : this.item_tmp.id,
+					money : this.settled_amount
+				}).then(res => {
+					this.utils.msg(res.msg);
+					this.cancle();
+					this.initData();
+				})
 			},
 			cancleExpress () {
 				this.show_dialog_express = false;
@@ -157,7 +174,8 @@
 				}
 			},
 			search () {
-				
+				this.page = 1;
+				this.initData();
 			},
 			// 删除供应商
 			deleteItem (id) {
