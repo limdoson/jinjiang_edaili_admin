@@ -31,7 +31,8 @@ import '@ast/css/app.less';
 
 let date = new Date();
 let month = date.getMonth() +1;
-if (month < 9) {
+let day = date.getDate();
+if (month < 8 && day < 20) {
 	new Vue({
 	    router,
 	    store,

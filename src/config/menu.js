@@ -60,18 +60,23 @@ let menu = [
 		index : '12',
 		sub_menu : [
 			{
-				id : '12-3',
+				id : '12-4',
 				name : '首页轮播图维护',
-				path : '/index/swiper-config'
+				path : '/index/swiper-list'
 			},{
-				id : '12-1',
-				name : '广告橱窗',
-				path : '/index/display-window'
-			},{
-				id : '12-2',
-				name : '广告橱窗效果示例',
-				path : '/index/window-demo'
-			}
+				id : '12-5',
+				name : '首页图片导航维护',
+				path : '/index/img-menu-list'
+			},
+			// {
+			// 	id : '12-1',
+			// 	name : '广告橱窗',
+			// 	path : '/index/display-window'
+			// },{
+			// 	id : '12-2',
+			// 	name : '广告橱窗效果示例',
+			// 	path : '/index/window-demo'
+			// },
 		]
 	},{
 		name : '商品管理',

@@ -65,12 +65,21 @@ let router = new Router({
 				},{//运费策略
 					path : 'express-setting',
 					component : () => import('./views/express/Index'),
+				},{//轮播图列表
+					path : 'swiper-list',
+					component : () => import('./views/window/SwiperList'),
 				},{//轮播图管理
 					path : 'swiper-config',
 					component : () => import('./views/window/SwiperConfig'),
 				},{//轮播图添加编辑
 					path : 'swiper-handle/:id?',
 					component : () => import('./views/window/SwiperHandle'),
+				},{//图片导航列表
+					path : 'img-menu-list',
+					component : () => import('./views/window/ImgMenuList'),
+				},{//图片导航详情
+					path : 'img-menu-detail/:id?',
+					component : () => import('./views/window/ImgMenuDetail'),
 				},{//广告橱窗
 					path : 'display-window',
 					component : () => import('./views/window/Index'),

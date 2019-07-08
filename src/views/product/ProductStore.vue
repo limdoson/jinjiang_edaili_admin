@@ -51,6 +51,10 @@
 							<el-form-item label="供应价">
 								<span class="red" >{{item.supply_price}}元</span>
 							</el-form-item>
+							<el-form-item label="默认分销比例">
+								<el-input placeholder="如有需要,可设置单品分销比例" type="text" v-model='item.distributor'></el-input>
+								<p class="tips">填写示例：8@10,表示1级分销比例为10，2级分销比例为5</p>
+							</el-form-item>
 							<el-form-item label="售价">
 								<el-input placeholder="请设置该规格属性售价" type="number" v-model='item.price'></el-input>
 							</el-form-item>
@@ -61,6 +65,10 @@
 						<el-form  label-width='180px' class="f-s">
 							<el-form-item label="供应价">
 								<span class="red">{{scope.row.supply_price}}元</span>
+							</el-form-item>
+							<el-form-item label="默认分销比例">
+								<el-input placeholder="如有需要,可设置单品分销比例" type="text" v-model='scope.row.distributor'></el-input>
+								<p class="tips">填写示例：8@10,表示1级分销比例为10，2级分销比例为5</p>
 							</el-form-item>
 							<el-form-item label="售价">
 								<el-input placeholder="请设置该规格属性售价" type="price" v-model="scope.row.price"></el-input>
@@ -138,11 +146,13 @@
 							{
 								attr_title : '红色,300ml',
 								supply_price : 10,
-								market_price : null
+								market_price : null,
+								distributor : null
 							},{
 								attr_title : '红色,100ml',
 								supply_price : 15,
-								market_price : null
+								market_price : null,
+								distributor : null
 							}
 						]
 					},{
@@ -241,7 +251,8 @@
 				} else {//无属性
 					this.http.post('/v1/a_goods/upGoods',{
 						id : row.id,
-						price : row.price
+						price : row.price,
+						distributor : row.distributor
 					}).then(res => {
 						this.$message({
 							showIcon : true,
