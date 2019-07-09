@@ -65,7 +65,7 @@ let menu = [
 				path : '/index/swiper-list'
 			},{
 				id : '12-5',
-				name : '首页图片导航维护',
+				name : '首页导航维护',
 				path : '/index/img-menu-list'
 			},
 			// {

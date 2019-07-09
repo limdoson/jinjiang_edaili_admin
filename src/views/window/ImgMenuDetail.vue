@@ -36,6 +36,11 @@
 			:data='list'
 			:header-cell-style = "{backgroundColor: '#fafafa'}">
 			<el-table-column prop="id" label="ID"></el-table-column>
+			<el-table-column prop="title" label="导航文本内容">
+				<template slot-scope='scope'>
+					<el-input v-model="scope.row.title" @change='changeItem(scope.row)'></el-input>
+				</template>
+			</el-table-column>
 			<el-table-column prop="title" label="图片">
 				<template slot-scope='scope'>
 					<up-load v-model='scope.row.img' @change='changeItem(scope.row)'></up-load>
@@ -135,10 +140,6 @@
 			confirm () {
 				if ( !this.title ) {
 					this.utils.msg('请填写导航文本内容');
-					return;
-				}
-				if ( !this.img ) {
-					this.utils.msg('请上传导航项图片');
 					return;
 				}
 				this.http.post('/v1/a_shopIndex/addNav',{
