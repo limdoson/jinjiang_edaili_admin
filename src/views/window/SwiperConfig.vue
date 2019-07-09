@@ -13,12 +13,16 @@
 				<el-form-item label='提示'>
 					<span class="red">请确保所有轮播图尺寸一致。</span>
 				</el-form-item>
-				<el-form-item label="轮播图链接">
-					<el-input v-model="link" placeholder="请输入轮播图链接"></el-input>
-				</el-form-item>
 				<el-form-item label="图片上传">
 					<up-load v-model='img'></up-load>
 				</el-form-item>
+				<el-form-item label="轮播图链接">
+					<el-input v-model="link" placeholder="请输入轮播图链接"></el-input>
+				</el-form-item>
+				<el-form-item label="轮播图排序">
+					<el-input v-model="sort" placeholder="排序"></el-input>
+				</el-form-item>
+				
 				<el-form-item >
 					
 					<el-button type="primary" size="small" @click='confirm'>添加轮播图</el-button>
@@ -49,12 +53,12 @@
 			</el-table-column>
 			<!-- <el-table-column  label="是否显示">
 				<template slot-scope='scope'>
-					<el-switch v-model="scope.row.is_show" active-text="显示" inactive-text="隐藏"></el-switch>
+					<el-switch v-model="scope.row.status" active-text="显示" inactive-text="隐藏"></el-switch>
 				</template>
 			</el-table-column> -->
 			<el-table-column prop="" label="操作">
 				<template slot-scope='scope'>
-					<el-button type="text" size="small">删除</el-button>
+					<el-button type="text" size="small" @click='deleteItem(scope.row)'>删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -80,7 +84,8 @@
 				page :1,
 				total : 1,
 				link : null,
-				img : null
+				img : null,
+				sort : null
 			}
 		},
 		created () {
@@ -89,7 +94,8 @@
 		
 		methods : {
 			initData () {
-				this.http.post('/v1/a_shopIndex/getFlashList',{
+				this.http.post('/v1/a_shopIndex/listFlash',{
+					f_id : this.$route.params.id,
 					limit : this.limit,
 					page : this.page
 				}).then(res => {
@@ -106,8 +112,18 @@
 					url : item.url,
 					sort :item.sort,
 					status : item.status,
+					f_id : this.$route.params.id
 				}).then(res => {
 					this.utils.msg(res.msg)
+				})
+			},
+			//删除
+			deleteItem (item) {
+				this.http.post('/v1/a_shopIndex/delFlash',{
+					id : item.id
+				}).then(res => {
+					this.utils.msg(res.msg);
+					this.initData();
 				})
 			},
 			currentChange (page) {
@@ -115,17 +131,21 @@
 				this.initData();
 			},
 			confirm () {
-				if (!this.link || !this.img) {
-					this.utils.msg('轮播图链接及图片都必填');
+				if ( !this.img ) {
+					this.utils.msg('请上传轮播图图片');
 					return;
 				}
 				this.http.post('/v1/a_shopIndex/addFlash',{
 					img : this.img,
 					url : this.link,
+					sort : this.sort,
+					f_id : this.$route.params.id
 				}).then(res => {
 					this.utils.msg(res.msg);
 					this.img = null;
 					this.link = null;
+					this.sort = null;
+					this.initData();
 				})
 			}
 		},

@@ -69,7 +69,7 @@ let router = new Router({
 					path : 'swiper-list',
 					component : () => import('./views/window/SwiperList'),
 				},{//轮播图管理
-					path : 'swiper-config',
+					path : 'swiper-config/:id',
 					component : () => import('./views/window/SwiperConfig'),
 				},{//轮播图添加编辑
 					path : 'swiper-handle/:id?',

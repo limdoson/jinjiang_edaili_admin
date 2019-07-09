@@ -2,17 +2,17 @@
 	<div class="basic-setting">
 		<div class="form-container">
 			<el-form label-width="160px">
-				<el-form-item label='客服电话'>
+				<!-- <el-form-item label='客服电话'>
 					<el-input v-model="service_tel" placeholder="请输入内容"></el-input>
-				</el-form-item>
-				<el-form-item label='系统敏感词汇'>
+				</el-form-item> -->
+				<!-- <el-form-item label='系统敏感词汇'>
 					<el-input type='textarea' style='max-width: 300px;' v-model="sensitive" placeholder="请输入内容"></el-input>
 					<el-alert
 						title="多个词语请用英文输入法下的','分隔，如“敏感词1,敏感词2”，如果用户评论或其他用户提交信息类流程中，出现敏感词汇设置中的词语，将会以'**'替代。"
 						type="warning"
 						show-icon>
 					</el-alert>
-				</el-form-item>
+				</el-form-item> -->
 				<el-form-item label='会员默认头像'>
 					<up-load v-model='default_avatar'></up-load>
 				</el-form-item>

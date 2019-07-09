@@ -59,7 +59,7 @@
 			<el-table-column fixed='right' label='操作' width='240'>
 				<template slot-scope="scope">
 					<el-button type="text" size="small" @click="offShelf(scope.row.id)">下架商品</el-button>
-					<el-button type="text" size="small" @click="$router.push('product-buy-record')">购买记录</el-button>
+					<!-- <el-button type="text" size="small" @click="$router.push('product-buy-record')">购买记录</el-button> -->
 					<el-button type="text" size="small" @click="$router.push('product-detail/'+scope.row.id)">商品详情</el-button>
 				</template>
 			</el-table-column>

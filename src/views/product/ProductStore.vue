@@ -43,8 +43,8 @@
 			<el-table-column type="expand">
 				<template slot-scope='scope'>
 					<!-- 有多属性的商品 -->
-					<div  v-if='scope.row.attrubute && scope.row.attrubute.length > 0'>
-						<el-form  label-width='180px' class="f-s" v-for="(item,index) in scope.row.attrubute" :key='index'>
+					<div  v-if='scope.row.attribute && scope.row.attribute.length > 0'>
+						<el-form  label-width='180px' class="f-s" v-for="(item,index) in scope.row.attribute" :key='index'>
 							<el-form-item >
 								{{item.name}}
 							</el-form-item>
@@ -53,7 +53,7 @@
 							</el-form-item>
 							<el-form-item label="默认分销比例">
 								<el-input placeholder="如有需要,可设置单品分销比例" type="text" v-model='item.distributor'></el-input>
-								<p class="tips">填写示例：8@10,表示1级分销比例为10，2级分销比例为5</p>
+								<p class="tips">填写示例：10@8,表示1级分销比例为10，2级分销比例为8</p>
 							</el-form-item>
 							<el-form-item label="售价">
 								<el-input placeholder="请设置该规格属性售价" type="number" v-model='item.price'></el-input>
@@ -68,7 +68,7 @@
 							</el-form-item>
 							<el-form-item label="默认分销比例">
 								<el-input placeholder="如有需要,可设置单品分销比例" type="text" v-model='scope.row.distributor'></el-input>
-								<p class="tips">填写示例：8@10,表示1级分销比例为10，2级分销比例为5</p>
+								<p class="tips">填写示例：10@8,表示1级分销比例为10，2级分销比例为8</p>
 							</el-form-item>
 							<el-form-item label="售价">
 								<el-input placeholder="请设置该规格属性售价" type="price" v-model="scope.row.price"></el-input>
@@ -231,14 +231,14 @@
 			curfirmCommodityShelves (row) {
 				//判断该商品是否有规格属性，如果有，则判断每个属性是否都设置了价格
 				//如果没有属性，判断商品是否设置了价格
-				if (row.attrubute && row.attrubute.length > 0) {
-					if (!row.attrubute.every(item => {return item.price > 0})) {
+				if (row.attribute && row.attribute.length > 0) {
+					if (!row.attribute.every(item => {return item.price > 0})) {
 						this.utils.msg('请设置该商品所有规格属性对应售价');
 						return;
 					};
 					this.http.post('/v1/a_goods/upGoods',{
 						id : row.id,
-						attributePrice : JSON.stringify(row.attrubute)
+						attributePrice : JSON.stringify(row.attribute)
 					}).then(res => {
 						this.$message({
 							showIcon : true,

@@ -15,6 +15,9 @@
 				<el-form-item label="商品供应价格">
 					<el-input placeholder="填写商品供应价格,该价格将用于货款结算" type="number" v-model='supply_price' :disabled='input_disabled'></el-input>
 				</el-form-item>
+				<el-form-item label="单品分销比例">
+					<el-input placeholder="" type="text" v-model='distributor' :disabled='input_disabled'></el-input>
+				</el-form-item>
 				<!-- <el-form-item label="建议零售价">
 					<el-input placeholder="填写商品建议零售价" type="number" v-model="msrp"></el-input>
 				</el-form-item> -->
@@ -133,7 +136,7 @@
 		components: {editor},
 		data () {
 			return {
-				active : 2,//默认激活选项卡
+				active : 0,//默认激活选项卡
 				product_property_group : [],//已选规格属性组
 				attr_table_data : [],//生成表单的数据
 				t_id : [],//商品分类ID
@@ -141,6 +144,7 @@
 				attr_group :null,
 				name : null,//商品名称
 				supply_price : null,//商品供应价
+				distributor : null,//单品分销比例
 				msrp : null,//建议零售价
 				unit : null,//计量单位
 				sku : null,//SKU
@@ -172,6 +176,7 @@
 					console.log(res)
 					this.name = res.data.name;
 					this.supply_price = res.data.supply_price;
+					this.distributor = res.data.distributor;
 					this.unit = res.data.unit;
 					this.sku = res.data.sku;
 					this.stock = res.data.stock;

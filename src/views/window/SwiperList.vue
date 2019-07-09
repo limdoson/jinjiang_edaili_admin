@@ -14,14 +14,32 @@
 			:data='list'
 			:header-cell-style = "{backgroundColor: '#fafafa'}">
 			<el-table-column prop="id" label="id"></el-table-column>
-			<el-table-column prop="name" label="轮播图名称"></el-table-column>
-			<el-table-column prop="sort" label="排序"></el-table-column>
+			<el-table-column prop="title" label="轮播图名称">
+				<template slot-scope='scope'>
+					<el-input v-model="scope.row.title" @change='changeItem(scope.row)'></el-input>
+				</template>
+			</el-table-column>
+			<el-table-column prop="sort" label="排序">
+				<template slot-scope='scope'>
+					<el-input v-model="scope.row.sort" @change='changeItem(scope.row)'></el-input>
+				</template>
+			</el-table-column>
 			<el-table-column prop="title" label="操作">
 				<template slot-scope='scope'>
-					<el-button type="text" size="small" @click='toUpload'>上传图片</el-button>
+					<el-button type="text" size="small" @click='toUpload(scope.row)'>上传图片</el-button>
+					<el-button type="text" size="small" @click='deleteItem(scope.row)'>删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
+		<div class="pagination s-b">
+			<div></div>
+			<el-pagination
+			  background
+			  @current-change='currentChange'
+			  layout="prev, pager, next"
+			  :total="total">
+			</el-pagination>
+		</div>
 		<!-- dialog -->
 		<el-dialog  
 			:visible.sync='showDialog' 
@@ -30,7 +48,7 @@
 			:show-close='false'>
 			<el-form ref="form" label-width="120px">
 				<el-form-item label='轮播图名称'>
-					<el-input type='text' v-model='name'></el-input>
+					<el-input type='text' v-model='title'></el-input>
 				</el-form-item>
 				<el-form-item label='排序' >
 					<el-input type='number' v-model='sort'></el-input>
@@ -50,26 +68,75 @@
 		data () {
 			return {
 				showDialog :false,
-				list : [
-					{
-						id:1,
-						name : '轮播图名称',
-						sort : 1
-					}
-				],
-				name : null,
+				list : null,
+				page :1,
+				limit : 10,
+				total : 1,
+				title : null,
 				sort : null,
 			}
 		},
+		created () {
+			this.initData();
+		},
 		methods: {
+			initData () {
+				this.http.post('/v1/a_shopIndex/listFlashDiv',{
+					page : this.page,
+					limit : this.limit
+				}).then(res => {
+					this.list = res.data.data;
+					this.total = res.data.total;
+				})
+			},
+			currentChange (page) {
+				this.page = page;
+				this.initData()
+			},
+			changeItem (item) {
+				this.http.post('/v1/a_shopIndex/updFlashDiv',{
+					id :item.id,
+					title : item.title,
+					sort : item.sort
+				}).then(res =>{
+					this.utils.msg(res.msg)
+				})
+			},
+			deleteItem (item) {
+				this.http.post('/v1/a_shopIndex/delFlashDiv',{
+					id : item.id
+				}).then(res => {
+					this.utils.msg(res.msg);
+					this.initData();
+				})
+			},
 			cancalAdd () {
 				this.showDialog = false;
-				this.name = null;
+				this.title = null;
 				this.sort = null;
 			},
-			curfirmAdd () {},
-			toUpload () {
-				this.$router.push('/index/swiper-config')
+			curfirmAdd () {
+				if (!this.title) {
+					this.utils.msg('请填写轮播图名称');
+					return;
+				}
+				if (!this.sort) {
+					this.utils.msg('请填写轮播图排序');
+					return;
+				}
+				this.http.post('/v1/a_shopIndex/addFlashDiv',{
+					title : this.title,
+					sort : this.sort,
+				}).then(res =>{
+					this.utils.msg('添加成功');
+					this.title = null;
+					this.sort = null;
+					this.showDialog = false;
+					this.initData();
+				})
+			},
+			toUpload (item) {
+				this.$router.push('/index/swiper-config/'+item.id)
 			}
 		}
 	}

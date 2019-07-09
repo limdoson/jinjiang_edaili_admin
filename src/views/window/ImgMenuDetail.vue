@@ -10,15 +10,20 @@
 		</el-row> -->
 		<div class="form-container">
 			<el-form label-width="140px">
-				<el-form-item label="导航文本内容">
-					<el-input v-model="content" placeholder=""></el-input>
-				</el-form-item>
-				<el-form-item label="导航链接">
-					<el-input v-model="link" placeholder=""></el-input>
-				</el-form-item>
+				
 				<el-form-item label="图片上传">
 					<up-load v-model='img'></up-load>
 				</el-form-item>
+				<el-form-item label="导航文本内容">
+					<el-input v-model="title" placeholder="请输入轮播图链接"></el-input>
+				</el-form-item>
+				<el-form-item label="导航链接">
+					<el-input v-model="link" placeholder="请输入轮播图链接"></el-input>
+				</el-form-item>
+				<el-form-item label="导航排序">
+					<el-input v-model="sort" placeholder="排序"></el-input>
+				</el-form-item>
+				
 				<el-form-item >
 					
 					<el-button type="primary" size="small" @click='confirm'>添加导航项</el-button>
@@ -49,16 +54,16 @@
 			</el-table-column>
 			<!-- <el-table-column  label="是否显示">
 				<template slot-scope='scope'>
-					<el-switch v-model="scope.row.is_show" active-text="显示" inactive-text="隐藏"></el-switch>
+					<el-switch v-model="scope.row.status" active-text="显示" inactive-text="隐藏"></el-switch>
 				</template>
 			</el-table-column> -->
 			<el-table-column prop="" label="操作">
 				<template slot-scope='scope'>
-					<el-button type="text" size="small">删除</el-button>
+					<el-button type="text" size="small" @click='deleteItem(scope.row)'>删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
-		<!-- <div class="pagination s-b">
+		<div class="pagination s-b">
 			<span></span>
 			<el-pagination
 			  background
@@ -66,7 +71,7 @@
 			  layout="prev, pager, next"
 			  :total="total">
 			</el-pagination>
-		</div> -->
+		</div>
 	</div>
 </template>
 
@@ -79,9 +84,10 @@
 				limit :10,
 				page :1,
 				total : 1,
-				content : null,
+				title : null,
 				link : null,
-				img : null
+				img : null,
+				sort : null
 			}
 		},
 		created () {
@@ -90,43 +96,63 @@
 		
 		methods : {
 			initData () {
-				// this.http.post('/v1/a_shopIndex/getFlashList',{
-				// 	limit : this.limit,
-				// 	page : this.page
-				// }).then(res => {
-				// 	console.log(res)
-				// 	this.total = res.data.total;
-				// 	this.list = res.data.data;
-				// })
+				this.http.post('/v1/a_shopIndex/listNav',{
+					f_id : this.$route.params.id,
+					limit : this.limit,
+					page : this.page
+				}).then(res => {
+					console.log(res)
+					this.total = res.data.total;
+					this.list = res.data.data;
+				})
 			},
 			//编辑
 			changeItem (item) {
-				// this.http.post('/v1/a_shopIndex/updFlash',{
-				// 	id : item.id,
-				// 	img : item.img,
-				// 	url : item.url,
-				// 	sort :item.sort,
-				// 	status : item.status,
-				// }).then(res => {
-				// 	this.utils.msg(res.msg)
-				// })
+				this.http.post('/v1/a_shopIndex/updNav',{
+					id : item.id,
+					img : item.img,
+					url : item.url,
+					sort :item.sort,
+					status : item.status,
+					f_id : this.$route.params.id
+				}).then(res => {
+					this.utils.msg(res.msg)
+				})
+			},
+			//删除
+			deleteItem (item) {
+				this.http.post('/v1/a_shopIndex/delNav',{
+					id : item.id
+				}).then(res => {
+					this.utils.msg(res.msg);
+					this.initData();
+				})
 			},
 			currentChange (page) {
 				this.page = page;
 				this.initData();
 			},
 			confirm () {
-				if (!this.link || !this.img) {
-					this.utils.msg('图片、导航链接、文本内容都必填');
+				if ( !this.title ) {
+					this.utils.msg('请填写导航文本内容');
 					return;
 				}
-				this.http.post('/v1/a_shopIndex/addFlash',{
+				if ( !this.img ) {
+					this.utils.msg('请上传导航项图片');
+					return;
+				}
+				this.http.post('/v1/a_shopIndex/addNav',{
+					title : this.title,
 					img : this.img,
 					url : this.link,
+					sort : this.sort,
+					f_id : this.$route.params.id
 				}).then(res => {
 					this.utils.msg(res.msg);
 					this.img = null;
 					this.link = null;
+					this.sort = null;
+					this.initData();
 				})
 			}
 		},
